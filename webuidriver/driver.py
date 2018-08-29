@@ -22,7 +22,8 @@ from rtsf.p_executer import Runner
 from rtsf.p_common import CommonUtils,ModuleUtils
 from rtsf.p_exception import FunctionNotFound,VariableNotFound
 from webuidriver.remote.SeleniumHatch import SeleniumHatch
-from multiprocessing import Pool
+from functools import partial
+import multiprocessing
 
 class LocalDriver(Runner):      
     
@@ -30,21 +31,32 @@ class LocalDriver(Runner):
         self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")
         
         self.driver = SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False))
+        self._Actions.Web.driver = self.driver
     
     def run_test(self, testcase_dict):
         
-        pool = Pool(len(drivers))
-        # for i in executers:
-            # result = pool.apply_async(runnCase, args=(params,));#异步
-            # print result.get()
-        pool.map(callable_function, drivers.items());#并行
+        pool = multiprocessing.Pool()        
+        pool.map(partial(self.__eval_case, testcase_dict), [self.driver])
         pool.close()
         pool.join()
         
-    def case(self):
-        parser = self.parser
-        parser.bind_functions(ModuleUtils.get_callable_class_method_names(self._Actions.WebElement))
-        parser.update_binded_variables(self._Actions.WebElement.glob)        
+    def __eval_case(self, testcase_dict, driver):
+        parser = self.parser                    
+        functions = {}
+        web_functions = ModuleUtils.get_callable_class_method_names(self._Actions.Web)
+        web_element_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebElement)
+        web_context_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebContext)
+        web_wait_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebWait)
+        web_verify_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebVerify)
+        web_actions_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebActions)
+        functions.update(web_functions)
+        functions.update(web_element_functions)
+        functions.update(web_context_functions)
+        functions.update(web_wait_functions)
+        functions.update(web_verify_functions)
+        functions.update(web_actions_functions)   
+        parser.bind_functions(functions)
+        parser.update_binded_variables(self._Actions.WebContext.glob)        
          
         case_name = testcase_dict["name"]                 
         self.tracer.start(self.proj_info["module"], case_name, testcase_dict.get("responsible","Administrator"), testcase_dict.get("tester","Administrator"))        
