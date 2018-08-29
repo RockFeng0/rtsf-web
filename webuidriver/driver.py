@@ -21,13 +21,27 @@ Provide a function for the automation test
 from rtsf.p_executer import Runner
 from rtsf.p_common import CommonUtils,ModuleUtils
 from rtsf.p_exception import FunctionNotFound,VariableNotFound
+from webuidriver.remote.SeleniumHatch import SeleniumHatch
+from multiprocessing import Pool
 
-class Driver(Runner):      
+class LocalDriver(Runner):      
     
     def __init__(self):
         self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")
+        
+        self.driver = SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False))
     
     def run_test(self, testcase_dict):
+        
+        pool = Pool(len(drivers))
+        # for i in executers:
+            # result = pool.apply_async(runnCase, args=(params,));#异步
+            # print result.get()
+        pool.map(callable_function, drivers.items());#并行
+        pool.close()
+        pool.join()
+        
+    def case(self):
         parser = self.parser
         parser.bind_functions(ModuleUtils.get_callable_class_method_names(self._Actions.WebElement))
         parser.update_binded_variables(self._Actions.WebElement.glob)        
@@ -115,5 +129,10 @@ class Driver(Runner):
         finally:
 #             self.tracer.normal("globals:\n\t{}".format(parser._variables)) 
             self.tracer.stop()
+         
+    
+        
+        
+        
             
             

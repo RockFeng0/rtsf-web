@@ -35,65 +35,58 @@ def _parse_string_value(str_value):
         return str_value
     except SyntaxError:
         return str_value
+           
     
 class Web(object):
-    __driver = None
+    driver = None    
     
-    
-    @staticmethod
-    def _driver(self, driver_object):
-#         if not isinstance(driver_object, (webdriver.Remote, webdriver.Chrome, webdriver.Firefox)):
-#             raise TypeError('{} must be an instatnce in (webdriver.Remote, webdriver.Chrome, webdriver.Firefox)'.format(driver_object))
-#         self.__driver=driver_object
-        pass
-            
     @staticmethod
     def NavigateTo(url):
-        Web._driver().get(url)
+        Web.driver.get(url)
         
     @staticmethod
     def PageSource():
         ''' page source for this web '''
-        return Web._driver().page_source
+        return Web.driver.page_source
         
     @staticmethod
     def Refresh():
-        Web._driver().refresh()
+        Web.driver.refresh()
     
     @staticmethod
     def Forward():
-        Web._driver().forward()        
+        Web.driver.forward()        
     
     @staticmethod
     def Back():
-        Web._driver().back()
+        Web.driver.back()
             
     @staticmethod
     def IESkipCertError():
         ''' IE Skip SSL Cert Error '''
-        Web._driver().get("javascript:document.getElementById('overridelink').click();")
+        Web.driver.get("javascript:document.getElementById('overridelink').click();")
     
     @staticmethod
     def Maximize():
         """ 浏览器最大化       """
-        Web._driver().maximize_window()
+        Web.driver.maximize_window()
     
     @staticmethod
     def SetWindowSize(width, height):
         """ 设定浏览器宽高   """
-        Web._driver().set_window_size(width, height)
+        Web.driver.set_window_size(width, height)
                 
     @staticmethod
     def SwitchToDefaultFrame():        
         try:
-            Web._driver().switch_to_default_content()
+            Web.driver.switch_to_default_content()
         except:
             return False
     
     @staticmethod
     def SwitchToNewFrame(frame_name):
         try:            
-            WebDriverWait(Web._driver(), 10).until(lambda driver: getattr(driver,"switch_to.frame")(frame_name))          
+            WebDriverWait(Web.driver, 10).until(lambda driver: getattr(driver,"switch_to.frame")(frame_name))          
         except:            
             print("Waring: Timeout at %d seconds.Frame %s was not found." %frame_name)
             return False       
@@ -106,17 +99,17 @@ class Web(object):
     @staticmethod
     def SwitchToDefaultWindow():             
         try:
-            default_win = Web._driver().window_handles[0]
-            Web._driver().switch_to.window(default_win)
+            default_win = Web.driver.window_handles[0]
+            Web.driver.switch_to.window(default_win)
         except:
             return False
             
     @staticmethod
     def SwitchToNewWindow(): 
         try:
-            WebDriverWait(Web._driver(), 10).until(lambda driver: len(driver.window_handles) >= 2)            
-            new_win = Web._driver().window_handles[-1]
-            Web._driver().switch_to.window(new_win)
+            WebDriverWait(Web.driver, 10).until(lambda driver: len(driver.window_handles) >= 2)            
+            new_win = Web.driver.window_handles[-1]
+            Web.driver.switch_to.window(new_win)
         except:            
             print("Waring: Timeout at %d seconds. Pop Window Not Found.")
             return False
@@ -125,7 +118,7 @@ class Web(object):
     def SwitchToAlert(): 
         ''' <input value="Test" type="button" onClick="alert('OK')" > '''
         try:            
-            alert = WebDriverWait(Web._driver(), 10).until(lambda driver: driver.switch_to_alert())
+            alert = WebDriverWait(Web.driver, 10).until(lambda driver: driver.switch_to_alert())
             return alert            
         except:            
             print("Waring: Timeout at %d seconds.Alert was not found.")
@@ -155,23 +148,23 @@ class Web(object):
     @staticmethod
     def Js(script):
         """ 执行  js script       """
-        getattr(Web._driver(),"execute_script")(script)
+        getattr(Web.driver,"execute_script")(script)
         
     @staticmethod
     def ScrollTo(x, y):
         #p_log.step_info("normal",u"Element [%s]: Scroll To [%s, %s]" % (cls.__name__, x, y))
         # X-Y-top: window.scrollTo("0","0")
         # X-bottom:  window.scrollTo("10000","0"),   Y-bottom:  window.scrollTo("0","10000")           
-        Web._driver().execute_script("window.scrollTo(%s, %s);" % (x, y))
+        Web.driver.execute_script("window.scrollTo(%s, %s);" % (x, y))
             
     @staticmethod
     def ScreenShoot(f_path):
-        return Web._driver().save_screenshot(f_path)
+        return Web.driver.save_screenshot(f_path)
     
     @staticmethod
     def WebClose():
         try:
-            Web._driver().close()
+            Web.driver.close()
             Web.SwitchToDefaultWindow()       
         except:
             pass
@@ -179,7 +172,7 @@ class Web(object):
     @staticmethod
     def WebQuit():
         try:
-            Web._driver().quit()            
+            Web.driver.quit()            
         except:
             pass
         finally:
@@ -208,7 +201,7 @@ class WebElement(object):
         if not cls.__is_selector():
             raise Exception("Invalid selector[%s]." %cls.__control["by"])
         
-        driver = Web._driver()
+        driver = Web.driver
         try:            
             elements = WebDriverWait(driver, cls.__control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls.__control["by"], cls.__control["value"]))
         except:                        
@@ -230,7 +223,7 @@ class WebElement(object):
         if not cls.__is_selector():
             raise Exception("Invalid selector[%s]." %cls.__control["by"])
         
-        driver = Web._driver()
+        driver = Web.driver
         try:            
             elements = WebDriverWait(driver, cls.__control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls.__control["by"], cls.__control["value"]))
         except:            
@@ -372,20 +365,20 @@ class WebVerify(WebElement):
     @classmethod
     def VerifyTitle(cls, title):
         # 当前页面的title
-        if Web._driver().title == title:
+        if Web.driver.title == title:
             return True
         else:
-            print("VerifyTitle: %s" % Web._driver().title)
+            print("VerifyTitle: %s" % Web.driver.title)
             return False
     
     @classmethod
     def VerifyURL(cls, url):
         """ 获取当前页面的url """
           
-        if Web._driver().current_url == url:
+        if Web.driver.current_url == url:
             return True
         else:
-            print("VerifyURL: %s" % Web._driver().current_url)
+            print("VerifyURL: %s" % Web.driver.current_url)
             return False
     
     @classmethod
@@ -483,7 +476,7 @@ class WebActions(WebElement):
         
         element = cls._element()
         element.clear()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.send_keys_to_element(element, value)
         action.perform()
         
@@ -553,7 +546,7 @@ class WebActions(WebElement):
     def MouseOver(cls):
         ''' 鼠标悬浮 '''      
         element = cls._element()                
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.move_to_element(element)
         action.perform()
         time.sleep(1)    
@@ -563,7 +556,7 @@ class WebActions(WebElement):
         ''' 左键 点击 1次   '''
         
         element= cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.click(element)
         action.perform()
         
@@ -572,7 +565,7 @@ class WebActions(WebElement):
         ''' 左键点击2次 '''
         
         element = cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.double_click(element)
         action.perform()
                     
@@ -587,7 +580,7 @@ class WebActions(WebElement):
         
         element = cls._element()
         for _ in range(3):
-            action = ActionChains(Web._driver())
+            action = ActionChains(Web.driver)
             action.move_to_element(element)
             action.perform()           
             time.sleep(0.5)
@@ -597,7 +590,7 @@ class WebActions(WebElement):
         ''' 右键点击1次 '''
         
         element = cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.context_click(element)
         action.perform()
        
@@ -607,7 +600,7 @@ class WebActions(WebElement):
         ''' 相当于 按压，press '''
         
         element = cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.click_and_hold(element)
         action.perform()
     
@@ -617,7 +610,7 @@ class WebActions(WebElement):
         ''' 释放按压操作   '''
         
         element = cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.release(element)
         action.perform()
         
@@ -636,7 +629,7 @@ class WebActions(WebElement):
         '''
         
         element = cls._element()        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.send_keys_to_element(element, Keys.ENTER)
         action.perform()
             
@@ -705,7 +698,7 @@ class WebActions(WebElement):
         
         element = cls._element()        
 #         element.send_keys(Keys.NULL)        
-        action = ActionChains(Web._driver())
+        action = ActionChains(Web.driver)
         action.send_keys_to_element(element, Keys.NULL)
         action.perform()
         
@@ -743,68 +736,7 @@ class WebActions(WebElement):
         else:            
             return False
         
-    
-        
-        
-'''
-def usage_for_web():
-    print("open firefox")
-    WebBrowser.Init("firefox")
-    print("navigate to www.baidu.com"    )
-    WebBrowser.NavigateTo("http://www.baidu.com")
-    print("refresh www.baidu.com"    )
-    WebBrowser.Refresh()
-    
-    print("navigate to knitterDemo")
-    WebBrowser.NavigateTo("http://sleepycat.org/static/knitter/KnitterDemo.html")
-    
-    WebElement.by, WebElement.value = "ID", "title"
-    print("select box-test")
-    WebElement.Select("Mrs.")
-    time.sleep(0.5)
-    WebElement.Set("Mr.")
-    time.sleep(0.5)
-    WebElement.SelectByOrder(3)
-    time.sleep(0.5)
-    
-    WebElement.by, WebElement.value = "CSS_SELECTOR", "#name"
-    print("text box-test")
-    WebElement.SendKeys("Hello world! 1")
-    time.sleep(0.5)
-    WebElement.Set("Hello world! 2")
-    time.sleep(0.5)
-    WebElement.SendKeys("Hello world! 3")
-    WebElement.GetFocus()
-    WebElement.SendKeys("Hello world! 4")
-    time.sleep(0.5)
-    print("close firefox")
-    WebBrowser.WebClose()
-'''
-       
 
-if __name__ == "__main__":
-    from rtsf.p_common import ModuleUtils
-    Actions = ModuleUtils.get_imported_module("webuidriver.actions")
-    functions = {}
-    web_functions = ModuleUtils.get_callable_class_method_names(Actions.Web)
-    web_element_functions = ModuleUtils.get_callable_class_method_names(Actions.WebElement)
-    web_context_functions = ModuleUtils.get_callable_class_method_names(Actions.WebContext)
-    web_wait_functions = ModuleUtils.get_callable_class_method_names(Actions.WebWait)
-    web_verify_functions = ModuleUtils.get_callable_class_method_names(Actions.WebVerify)
-    web_actions_functions = ModuleUtils.get_callable_class_method_names(Actions.WebActions)
-    functions.update(web_functions)
-    functions.update(web_element_functions)
-    functions.update(web_context_functions)
-    functions.update(web_wait_functions)
-    functions.update(web_verify_functions)
-    functions.update(web_actions_functions)
-    
-    print(functions)
-#     functions.get("NavigateTo")("http://www.baidu.com")
-#     functions.get("SetControl")(by = 'id', value = "kw")
-#     functions.get("SendKeys")(123456)
-#     time.sleep(1)
-#     functions.get("WebClose")()
       
     
     

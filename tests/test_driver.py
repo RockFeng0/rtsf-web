@@ -52,6 +52,7 @@ class TestTestRunner(unittest.TestCase):
         
         self.assertEqual(os.path.isfile(html_report[0]), True)
         
+        
 
 
 if __name__ == "__main__":

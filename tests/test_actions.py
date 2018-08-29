@@ -21,10 +21,14 @@ Provide a function for the automation test
 import unittest,os,re
 
 from webuidriver.actions import Web, WebElement, WebActions, WebContext, WebVerify, WebWait
+from webuidriver.remote.SeleniumHatch import SeleniumHatch
+from rtsf.p_common import ModuleUtils
+import time
 
 class TestActions(unittest.TestCase):
     
-    def setUp(self):        
+    def setUp(self):
+        self.driver = Web.driver = SeleniumHatch.gen_local_driver("chrome", SeleniumHatch.get_remote_browser_capabilities("chrome"))        
         Web.NavigateTo('https://www.baidu.com')
         
         self.test_tmp_path = "./data/test_tmp"
@@ -35,19 +39,22 @@ class TestActions(unittest.TestCase):
         WebWait.TimeSleep(1)
         Web.WebQuit()
     
-    def TestWebWait(self):
+    def test_WebWait(self):
         WebWait.SetControl(by = "id", value = 'kw', index = 0, timeout = 5)
         self.assertEqual(WebWait.TimeSleep(1), None)
         self.assertEqual(WebWait.WaitForDisappearing(), False)
         self.assertEqual(WebWait.WaitForAppearing(), True)
         self.assertEqual(WebWait.WaitForVisible(), True)
     
-    def TestWebElement(self):
+    def test_WebElement(self):
         control = {"by":"111", "value" : "!!!", "index":22, "timeout":10}
         WebElement.SetControl(**control)
-        self.assertEqual(WebElement.GetControl(), control)    
+        self.assertEqual(WebElement.GetControl(), control)
+        
+        WebElement.SetControl(index = 0)
+        self.assertEqual(WebElement.GetControl().get("index"), 0)
     
-    def TestWebContext(self):
+    def test_WebContext(self):
         url = "https://www.baidu.com"
         WebContext.SetVar("url", url)        
         self.assertEqual(WebContext.GetVar("url"), url)
@@ -66,13 +73,13 @@ class TestActions(unittest.TestCase):
         self.assertEqual(WebContext.glob, {'url': 'https://www.baidu.com', 'title': '百度一下，你就知道', 'su': '百度一下', 'desc': '成功'})        
         Web.WebClose()
     
-    def TestWebVerify(self):
+    def test_WebVerify(self):
         Web.NewTab('https://www.baidu.com')
         
         self.assertEqual(WebVerify.VerifyURL("https://www.baidu.com/"), True)
         self.assertEqual(WebVerify.VerifyTitle("百度一下，你就知道"), True)
         
-        WebElement.SetControl(by = "id", value = "su")
+        WebElement.SetControl(by = "id", value = "su", index = 0, timeout = 10)
         self.assertEqual(WebVerify.VerifyElemAttr("value", "百度一下"), True)
         self.assertEqual(WebVerify.VerifyElemCounts(1), True)
         self.assertEqual(WebVerify.VerifyElemEnabled(), True)
@@ -84,7 +91,7 @@ class TestActions(unittest.TestCase):
         self.assertEqual(WebVerify.VerifyElemInnerHtml("百度一下"), True)        
         Web.WebClose()
             
-    def TestWeb(self):
+    def test_Web(self):
         Web.NewTab('https://www.sina.com.cn')        
         Web.Maximize()
         self.assertEqual(WebVerify.VerifyURL("https://www.sina.com.cn/"), True)
@@ -113,33 +120,54 @@ class TestActions(unittest.TestCase):
         m = re.search("百度一下，你就知道", Web.PageSource())
         self.assertIsNotNone(m)
     
-    def TestWebAction(self):
+    def test_WebAction(self):
         Web.NavigateTo('https:/www.sina.com')
         Web.ScrollTo(0, 1000)
         WebWait.TimeSleep(1)
         Web.Refresh()
         
         Web.NewTab('https://www.baidu.com')
-        WebActions.SetControl(by = "css selector", value = "kw")
+        WebActions.SetControl(by = "css selector", value = "#kw")
         WebActions.SendKeys("123456")
         WebWait.TimeSleep(1)
         Web.WebClose()
     
-    
+    def test_WebAction_rtsf(self):  
+        Actions = ModuleUtils.get_imported_module("webuidriver.actions")
+        Actions.Web.driver = self.driver
+            
+        functions = {}
+        web_functions = ModuleUtils.get_callable_class_method_names(Actions.Web)
+        web_element_functions = ModuleUtils.get_callable_class_method_names(Actions.WebElement)
+        web_context_functions = ModuleUtils.get_callable_class_method_names(Actions.WebContext)
+        web_wait_functions = ModuleUtils.get_callable_class_method_names(Actions.WebWait)
+        web_verify_functions = ModuleUtils.get_callable_class_method_names(Actions.WebVerify)
+        web_actions_functions = ModuleUtils.get_callable_class_method_names(Actions.WebActions)
+        functions.update(web_functions)
+        functions.update(web_element_functions)
+        functions.update(web_context_functions)
+        functions.update(web_wait_functions)
+        functions.update(web_verify_functions)
+        functions.update(web_actions_functions)  
+        self.assertNotEqual(functions, {})        
         
-    
+        print(functions)
+        functions.get("NavigateTo")("http://www.baidu.com")
+        functions.get("SetControl")(by = 'id', value = "kw")
+        functions.get("SendKeys")(123456)
+        time.sleep(1)
+        functions.get("WebClose")()
+        functions.get("WebQuit")()
         
-    
-    
     
     
 if __name__ == "__main__":
-#     unittest.main(verbosity=2)
+    unittest.main(verbosity=2)
 
-    suite = unittest.TestSuite()
-#     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestActions))
-    suite.addTest(TestActions("TestWebVerify"))    
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
+#     suite = unittest.TestSuite()
+# #     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(TestActions))
+#     suite.addTest(TestActions("test_WebAction_rtsf"))    
+#     runner = unittest.TextTestRunner(verbosity=2)
+#     runner.run(suite)
 
     
