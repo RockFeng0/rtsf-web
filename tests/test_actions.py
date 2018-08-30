@@ -65,7 +65,7 @@ class TestActions(unittest.TestCase):
         WebContext.DyStrData("title", re.compile(title))        
         
         WebElement.SetControl(by = "id", value = "su")        
-        WebContext.DyAttrData("su", "value")        
+        WebContext.DyAttrData("su", "value")
         
         Web.NavigateTo("http://bztest.djtest.cn/background/pass/247686389303191")        
         WebContext.DyJsonData("desc", "desc")

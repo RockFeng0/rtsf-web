@@ -23,15 +23,13 @@ from rtsf.p_common import CommonUtils,ModuleUtils
 from rtsf.p_exception import FunctionNotFound,VariableNotFound
 from webuidriver.remote.SeleniumHatch import SeleniumHatch
 from functools import partial
-import multiprocessing
+import multiprocessing, re
 
 class LocalDriver(Runner):      
     
     def __init__(self):
-        self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")
-        
-        self.driver = SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False))
-        self._Actions.Web.driver = self.driver
+        self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")        
+        self.driver = SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False))        
     
     def run_test(self, testcase_dict):
         
@@ -41,7 +39,8 @@ class LocalDriver(Runner):
         pool.join()
         
     def __eval_case(self, testcase_dict, driver):
-        parser = self.parser                    
+        parser = self.parser
+        self._Actions.Web.driver = driver
         functions = {}
         web_functions = ModuleUtils.get_callable_class_method_names(self._Actions.Web)
         web_element_functions = ModuleUtils.get_callable_class_method_names(self.Actions.WebElement)
@@ -58,20 +57,22 @@ class LocalDriver(Runner):
         parser.bind_functions(functions)
         parser.update_binded_variables(self._Actions.WebContext.glob)        
          
-        case_name = testcase_dict["name"]                 
+        case_name = testcase_dict["name"]
+        
+        ###  to  change  self.tracer
         self.tracer.start(self.proj_info["module"], case_name, testcase_dict.get("responsible","Administrator"), testcase_dict.get("tester","Administrator"))        
         self.tracer.section(case_name)
          
         try:
-#             self.tracer.normal("**** bind glob variables")                
-#             glob_vars = parser.eval_content_with_bind_actions(testcase_dict.get("glob_var",{}))
-#             self.tracer.step("set global variables: {}".format(glob_vars))                
-#             self._Actions.WebHttp.glob.update(glob_vars)            
-#              
-#             self.tracer.normal("**** bind glob regular expression")
-#             globregx = {k: re.compile(v) for k,v in testcase_dict.get("glob_regx",{}).items()}
-#             self.tracer.step("set global regular: {}".format(globregx))            
-#             self._Actions.WebHttp.glob.update(globregx)
+            self.tracer.normal("**** bind glob variables")                
+            glob_vars = parser.eval_content_with_bind_actions(testcase_dict.get("glob_var",{}))
+            self.tracer.step("set global variables: {}".format(glob_vars))                
+            self._Actions.WebContext.glob.update(glob_vars)            
+             
+            self.tracer.normal("**** bind glob regular expression")
+            globregx = {k: re.compile(v) for k,v in testcase_dict.get("glob_regx",{}).items()}
+            self.tracer.step("set global regular: {}".format(globregx))            
+            self._Actions.WebContext.glob.update(globregx)
                              
             self.tracer.normal("**** precommand")
             precommand = testcase_dict.get("pre_command",[])    
@@ -84,37 +85,32 @@ class LocalDriver(Runner):
             for step in steps:
                 if not "webdriver" in step:
                     continue
-                 
-                by = parser.eval_content_with_bind_actions(step["webdriver"].get("by"))
-                self.tracer.normal("preparing: by -> {}".format(by))
-                
-                value = parser.eval_content_with_bind_actions(step["webdriver"].get("value"))
-                self.tracer.normal("preparing: value -> {}".format(value))
-                
-                index = parser.eval_content_with_bind_actions(step["webdriver"].get("index", 0))
-                self.tracer.normal("preparing: index -> {}".format(index))
-                
-                timeout = parser.eval_content_with_bind_actions(step["webdriver"].get("timeout", 10))
-                self.tracer.normal("preparing: timeout -> {}".format(timeout))                           
-                
-                prepare =parser.get_bind_function("Prepare")
-                prepare(by = by, value = value, index = index, timeout = timeout)
                 
                 if not step["webdriver"].get("action"):
                     raise KeyError("webdriver.action")
+                 
+                if step["webdriver"].get("by"):
+                    by = parser.eval_content_with_bind_actions(step["webdriver"].get("by"))
+                    self.tracer.normal("preparing: by -> {}".format(by))
+                    
+                    value = parser.eval_content_with_bind_actions(step["webdriver"].get("value"))
+                    self.tracer.normal("preparing: value -> {}".format(value))
+                    
+                    index = parser.eval_content_with_bind_actions(step["webdriver"].get("index", 0))
+                    self.tracer.normal("preparing: index -> {}".format(index))
+                    
+                    timeout = parser.eval_content_with_bind_actions(step["webdriver"].get("timeout", 10))
+                    self.tracer.normal("preparing: timeout -> {}".format(timeout))                           
                 
+                    prepare =parser.get_bind_function("SetControl")
+                    prepare(by = by, value = value, index = index, timeout = timeout)
+                                
                 result = parser.eval_content_with_bind_actions(step["webdriver"]["action"])                
                 if result == False:
-                    self.tracer.fail(step["action"])
+                    self.tracer.fail(step["webdriver"]["action"])
                 else:
-                    self.tracer.ok(step["action"])
+                    self.tracer.ok(step["webdriver"]["action"])
                         
-#                 resp_headers = parser.get_bind_function("GetRespHeaders")()
-#                 self.tracer.step("response headers: \n\t{}".format(resp_headers))
-             
-#                 resp_text = parser.get_bind_function("GetRespText")()
-#                 self.tracer.step(u"response body: \n\t{}".format(resp_text))                                 
-            
             self.tracer.normal("**** postcommand")
             postcommand = testcase_dict.get("post_command", [])        
             parser.eval_content_with_bind_actions(postcommand)

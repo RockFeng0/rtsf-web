@@ -361,7 +361,7 @@ class WebWait(WebElement):
         return result
     
 class WebVerify(WebElement):
-            
+        
     @classmethod
     def VerifyTitle(cls, title):
         # 当前页面的title
