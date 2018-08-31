@@ -22,7 +22,8 @@ import unittest,os
 from rtsf.p_executer import TestRunner
 from rtsf.p_report import HtmlReporter
 from rtsf.p_testcase import TestCaseParser
-from webuidriver.driver import LocalDriver 
+from webuidriver.driver import LocalDriver ,RemoteDriver
+from rtsf.p_applog import logger
 
 case_file = r'data\test_case.yaml'
 
@@ -33,10 +34,11 @@ class TestTestRunner(unittest.TestCase):
         pass
         
 if __name__ == "__main__":
+#     logger.setup_logger("debug")
 #     unittest.main()
 #     logger.setup_logger("debug")
 #     runner = TestRunner(runner = Driver).run(r"C:\d_disk\auto\buffer\test\rtsf-http-test\.yaml")    
-    runner = TestRunner(runner = LocalDriver).run(case_file)
+    runner = TestRunner(runner = RemoteDriver).run(case_file)
     html_report = runner.gen_html_report()
     
     
