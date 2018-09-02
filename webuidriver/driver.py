@@ -18,39 +18,25 @@ Provide a function for the automation test
 
 '''
 
+import re
 from rtsf.p_executer import Runner
 from rtsf.p_common import CommonUtils,ModuleUtils,FileSystemUtils
 from rtsf.p_exception import FunctionNotFound,VariableNotFound
 from webuidriver.remote.SeleniumHatch import SeleniumHatch
-from functools import partial
-import multiprocessing, re
-
-def eval_case(testcase_dict, parser, tracer, proj_info_module, driver):
-    print(testcase_dict, parser, tracer, proj_info_module, driver)
 
         
-
-        
-class Driver(Runner):      
+class _Driver(Runner):     
+    def __init__(self, is_local_driver):
+        super(_Driver,self).__init__()
+        self._local_driver = is_local_driver
     
-    def __init__(self):
-        #self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")
-        self.drivers = []        
-    
-    def run_test(self, testcase_dict):
-        multiprocessing.freeze_support()
-        pool = multiprocessing.Pool()        
-        tracers = pool.map(partial(self._eval_case, testcase_dict), self.drivers)
-        pool.close()
-        pool.join()
-        self.tracer = tracers[0]
-    
-    def _eval_case(self, testcase_dict, driver):
-        parser = self.parser
-        tracer = self.tracer
+    def run_test(self, testcase_dict, driver_map):
+        fn, fn_driver = driver_map        
+        parser = self.parser        
+        tracer = self.tracers[fn]
         
         _Actions = ModuleUtils.get_imported_module("webuidriver.actions")
-        _Actions.Web.driver = driver
+        _Actions.Web.driver = fn_driver
         
         functions = {}
         web_functions = ModuleUtils.get_callable_class_method_names(_Actions.Web)
@@ -94,14 +80,14 @@ class Driver(Runner):
             tracer.normal("**** steps")
             steps = testcase_dict["steps"]
             for step in steps:
-                print("---")            
+                #print("---")            
                 if not "webdriver" in step:
                     continue
                 
                 if not step["webdriver"].get("action"):
                     raise KeyError("webdriver.action")            
                 
-                print(step)
+                #print(step)
                 if step["webdriver"].get("by"):
                     by = parser.eval_content_with_bind_actions(step["webdriver"].get("by"))
                     tracer.normal("preparing: by -> {}".format(by))
@@ -119,7 +105,7 @@ class Driver(Runner):
                     prepare(by = by, value = value, index = index, timeout = timeout)
                                 
                 result = parser.eval_content_with_bind_actions(step["webdriver"]["action"])
-                print(":",result)           
+                #print(":",result)           
                 if result == False:
                     tracer.fail(step["webdriver"]["action"])
                 else:
@@ -149,27 +135,32 @@ class Driver(Runner):
         except Exception as e:
             tracer.error("%s\t%s" %(e,CommonUtils.get_exception_error()))
         finally:
-    #             tracer.normal("globals:\n\t{}".format(parser._variables)) 
+            #tracer.normal("globals:\n\t{}".format(parser._variables)) 
             tracer.stop()
         return tracer         
             
-class LocalDriver(Driver):
+class LocalDriver(_Driver):
     
     def __init__(self):
-        super(Driver, self).__init__()
+        super(LocalDriver,self).__init__(is_local_driver = True)        
         
-        self.drivers = [SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False))]
-        print(self.drivers)
-        #self._Actions = ModuleUtils.get_imported_module("webuidriver.actions")
-#         self.drivers = [1,2,3,4]
+        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False)
+        self._default_drivers = [("", SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = chrome_capabilities))]        
         
-class RemoteDriver(Driver):
+class RemoteDriver(_Driver):
     
     def __init__(self):
-        super(Driver, self).__init__()
+        super(RemoteDriver,self).__init__(is_local_driver = False)
+                
+        self._default_devices =[]
+        
+        self._default_drivers = []        
         executors = SeleniumHatch.get_remote_executors("localhost", 4444)
-        self._device_id = FileSystemUtils.get_legal_filename(executors[0])
         chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path = None, marionette = False)
-        self.drivers = [SeleniumHatch.gen_remote_driver(executor, chrome_capabilities) for executor in executors]
+        for executor in executors:
+            fn = FileSystemUtils.get_legal_filename(executor)
+            self._default_devices.append(fn)            
+            self._default_drivers.append((fn, SeleniumHatch.gen_remote_driver(executor, chrome_capabilities)))            
+            
     
             

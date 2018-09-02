@@ -25,7 +25,7 @@ class TestSeleniumJar(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        jar_path =  r'C:\d_disk\auto\python\rtsf-web\tests\data\selenium-server-standalone-3.14.0.jar'
+        jar_path =  r'D:\auto\buffer\test\test_rtsf_web\selenium-server-standalone-3.14.0.jar'
         java_path = "java"
         cls.hub = SeleniumJar(jar_path, java_path).hub(4444)
         cls.node = SeleniumJar(jar_path, java_path).node(5555,("localhost", 4444))
