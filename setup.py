@@ -20,7 +20,7 @@ UI and Web Http automation frame for python.
 '''
 
 
-'''   to do
+
 from httpdriver import __about__
 from setuptools import setup, find_packages
 
@@ -43,7 +43,7 @@ setup(
         license=__about__.__license__,
         python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4',
         packages=find_packages(exclude=()),        
-        keywords='test http api https',
+        keywords='test web ui',
         install_requires=install_requires,
         dependency_links=dependency_links,
         extras_require={},
@@ -54,4 +54,3 @@ setup(
         ]
     },
     )
-'''
