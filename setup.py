@@ -21,7 +21,7 @@ UI and Web Http automation frame for python.
 
 
 
-from httpdriver import __about__
+from webuidriver import __about__
 from setuptools import setup, find_packages
 
 install_requires = [
@@ -49,8 +49,8 @@ setup(
         extras_require={},
         entry_points={
         'console_scripts': [
-            'httpdriver=httpdriver.cli:main_hrun',
-            'hdriver=httpdriver.cli:main_hrun',
+            'wldriver=webuidriver.cli:local_main_hrun',
+            'wrdriver=webuidriver.cli:remote_main_hrun',
         ]
     },
     )

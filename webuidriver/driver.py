@@ -140,14 +140,24 @@ class _Driver(Runner):
         return tracer         
             
 class LocalDriver(_Driver):
+    _browser = "chrome"
+    _download_path = None
+    _marionette = False
     
     def __init__(self):
         super(LocalDriver,self).__init__(is_local_driver = True)        
         
-        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path=None, marionette = False)
+        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = LocalDriver._browser, 
+                                                                            download_path=LocalDriver._download_path, 
+                                                                            marionette = LocalDriver._marionette)
         self._default_drivers = [("", SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = chrome_capabilities))]        
         
 class RemoteDriver(_Driver):
+    _browser = "chrome"
+    _download_path = None
+    _marionette = False
+    _remote_ip = "localhost"
+    _remote_port = 4444
     
     def __init__(self):
         super(RemoteDriver,self).__init__(is_local_driver = False)
@@ -155,8 +165,10 @@ class RemoteDriver(_Driver):
         self._default_devices =[]
         
         self._default_drivers = []        
-        executors = SeleniumHatch.get_remote_executors("localhost", 4444)
-        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = "chrome", download_path = None, marionette = False)
+        executors = SeleniumHatch.get_remote_executors(RemoteDriver._remote_ip, RemoteDriver._remote_port)
+        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = RemoteDriver._browser, 
+                                                                            download_path = RemoteDriver._download_path, 
+                                                                            marionette = RemoteDriver._marionette)
         for executor in executors:
             fn = FileSystemUtils.get_legal_filename(executor)
             self._default_devices.append(fn)            
