@@ -3,7 +3,6 @@ encoding//tests/test_SeleniumHatch.py=utf-8
 encoding//tests/test_SelniumJar.py=utf-8
 encoding//tests/test_actions.py=utf-8
 encoding//tests/test_driver.py=utf-8
-encoding//webuidriver/SeleniumHatch.py=utf-8
 encoding//webuidriver/__about__.py=utf-8
 encoding//webuidriver/actions.py=utf-8
 encoding//webuidriver/cli.py=utf-8
