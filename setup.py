@@ -49,8 +49,10 @@ setup(
         extras_require={},
         entry_points={
         'console_scripts': [
-            'wldriver=webuidriver.cli:local_main_hrun',
-            'wrdriver=webuidriver.cli:remote_main_hrun',
+            'wldriver=webuidriver.cli:local_main_run', # local driver
+            'wrdriver=webuidriver.cli:remote_main_run', # remote driver
+            'wrhub=webuidriver.cli:hub_main_run', # selenium grid hub
+            'wrnode=webuidriver.cli:node_main_run', # selenium grid node
         ]
     },
     )

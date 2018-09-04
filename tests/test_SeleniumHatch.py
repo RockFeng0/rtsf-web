@@ -41,7 +41,7 @@ class TestSeleniumHatch(unittest.TestCase):
             pass
     
     def test_gen_remote_driver(self):
-        self.hub.start_server()        
+        self.hub.start_server()
         self.node.start_server()
         
         executors = SeleniumHatch.get_remote_executors("localhost", 4444)

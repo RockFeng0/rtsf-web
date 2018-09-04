@@ -24,11 +24,63 @@ import argparse
 from rtsf.p_applog import color_print,logger
 from rtsf.p_executer import TestRunner
 from webuidriver.driver import LocalDriver, RemoteDriver
+from webuidriver.remote.SeleniumHatch import SeleniumHatch
+from webuidriver.remote.SeleniumJar import SeleniumJar
 from webuidriver.__about__ import __version__
     
+
+def hub_main_run():
+    parser = argparse.ArgumentParser(description="selenium server jar with hub mode.")
+                
+    parser.add_argument(
+        '--java-path', default='java',
+        help="path of java. default is `java` if JAVA_HOME is configured. ")
+        
+    parser.add_argument(
+        '--port', type = int, default = 4444,
+        help="listen port for hub mode. default port: 4444")
+                
+    parser.add_argument(
+        'server_jar', 
+        help="selenium server jar path for selenium grid mode")
     
-def local_main_hrun():
-    """ parse command line options and run commands."""
+    
+    color_print("webuidriver {}".format(__version__), "GREEN")
+    args = parser.parse_args()
+    SeleniumJar(args.server_jar, args.java_path).hub(args.port).start_server()
+    
+def node_main_run():
+    parser = argparse.ArgumentParser(description="selenium server jar with node mode.")
+                
+    parser.add_argument(
+        '--java-path', default='java',
+        help="path of java. default is `java` if JAVA_HOME is configured. ")
+        
+    parser.add_argument(
+        '--port', type = int, default = 5555,
+        help="listen port for node mode. default port: 5555")
+    
+    parser.add_argument(
+        '--hub-ip', default = "localhost",
+        help="hub host or hub ip which need to connect. default host: localhost")
+    
+    parser.add_argument(
+        '--hub-port', type = int, default = 4444,
+        help="hub port which need to connect. default: 4444")
+    
+                
+    parser.add_argument(
+        'server_jar', 
+        help="selenium server jar path for selenium grid mode")
+    
+    
+    color_print("webuidriver {}".format(__version__), "GREEN")
+    args = parser.parse_args()
+    SeleniumJar(args.server_jar, args.java_path).node(args.port,(args.hub_ip, args.hub_port)).start_server()
+    
+    
+
+def local_main_run():
     
     parser = argparse.ArgumentParser(description="Tools for web ui test. Base on rtsf.")
             
@@ -67,8 +119,7 @@ def local_main_hrun():
     html_report = runner.gen_html_report()
     color_print("report: {}".format(html_report))
     
-def remote_main_hrun():
-    """ parse command line options and run commands."""
+def remote_main_run():
     
     parser = argparse.ArgumentParser(description="Tools for web ui test. Base on rtsf.")
             
