@@ -187,6 +187,9 @@ wrdriver C:\f_disk\BaiduNetdiskDownload\rtsf-web\tests\data\test_case.yaml --bro
 
 ## 封装的关键字(内置函数)
 
+关键字的使用，在前面，有介绍，规则如下
+> 变量引用-> $var    关键字(函数)引用-> ${function}
+
 ### 浏览器相关操作
 
 Web functions | 参数介绍 | 描述
@@ -213,6 +216,16 @@ SwitchToNewFrame(frame_name)| |切换浏览器焦点至frame_name框
 SwitchToNewWindow()         | |切换浏览器焦点至新window窗
 WebClose()                  | |关闭浏览器当前窗口
 WebQuit()                   | |Quits the driver and closes every associated window.
+<tr>
+       <td>SetControl(by,value,index,timeout)</td>
+       <tr>
+           <td>by: 指selenium的寻找元素的方式("id", "xpath", "link text","partial link text","name", "tag name", "class name", "css selector")，默认为None</td>
+           <td>value: 与by配对使用，相应by的值</td>
+           <td>index: 索引值，默认为0，即第一个， 如果by,value组合找到很多元素，通过索引index指定一个</td>
+           <td>timeout: 超时时间，默认10，即10秒，如果by,value组合寻找元素超过10秒，超时报错</td>
+       </tr>
+       <td>设置取element controls</td>
+   <tr>
 
 
 ## 自定义，关键字(函数、变量)
