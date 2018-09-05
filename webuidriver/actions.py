@@ -192,7 +192,7 @@ class WebElement(object):
         cls.__control.update(kwargs)
     
     @classmethod
-    def GetControl(cls,**kwargs):
+    def GetControl(cls):
         return cls.__control
                 
     @classmethod
@@ -639,8 +639,7 @@ class WebActions(WebElement):
         @note: key event -> control + key
         @param key: 如'X'
         """
-        element = cls._element()
-        print(cls.GetControl())
+        element = cls._element()        
         element.send_keys(Keys.CONTROL, key)
         
         
