@@ -216,7 +216,8 @@ SwitchToNewFrame(frame_name)| |切换浏览器焦点至frame_name框
 SwitchToNewWindow()         | |切换浏览器焦点至新window窗
 WebClose()                  | |关闭浏览器当前窗口
 WebQuit()                   | |Quits the driver and closes every associated window.
-<tr>
+<table>
+    <tr>
        <td>SetControl(by,value,index,timeout)</td>
        <tr>
            <td>by: 指selenium的寻找元素的方式("id", "xpath", "link text","partial link text","name", "tag name", "class name", "css selector")，默认为None</td>
@@ -225,7 +226,8 @@ WebQuit()                   | |Quits the driver and closes every associated wind
            <td>timeout: 超时时间，默认10，即10秒，如果by,value组合寻找元素超过10秒，超时报错</td>
        </tr>
        <td>设置取element controls</td>
-   <tr>
+    <tr>
+</table>
 
 
 ## 自定义，关键字(函数、变量)
