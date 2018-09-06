@@ -233,7 +233,7 @@ WebQuit()                   | |Quits the driver and closes every associated wind
     <tr>
         <td rowspan="4">SetControl(by,value,index,timeout)</td>
         <td>by: 指selenium的寻找元素的方式("id", "xpath", "link text","partial link text","name", "tag name", "class name", "css selector")，默认为None</td>
-        <td rowspan="3">设置取element controls</td>
+        <td rowspan="4">设置取element controls</td>
     </tr>
     <tr>
         <td>value: 与by配对使用，相应by的值</td>
@@ -274,8 +274,10 @@ TimeSleep(seconds)                   # -> 指定等待时间(秒钟)
 WaitForAppearing()                   # -> 等待元素出现(可能是隐藏，不可见的)，** 配合SetControl使用 **
 WaitForDisappearing()                # -> 等待元素消失，** 配合SetControl使用 **
 WaitForVisible()                     # -> 等待元素可见，** 配合SetControl使用 **
+```
 
-#### WebVerify methods --> 用于验证
+### WebVerify methods --> 用于验证
+```
 VerifyAlertText(text)                        # -> 验证alert弹窗，包含文本text
 VerifyElemAttr(attr_name,expect_value)       # -> 验证元素属性attr_name的值，包含值expect_value,** 配合SetControl使用 **
 VerifyElemCounts(num)                        # -> 验证元素数量为num,** 配合SetControl使用 **
