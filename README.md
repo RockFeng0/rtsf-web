@@ -250,7 +250,7 @@ WebQuit()                   | |Quits the driver and closes every associated wind
 
 ### WebContext methods --> 用于上下文管理
 ```
-DyAttrData(name,attr)                       # -> 属性-动态存储变量，适用于，保存UI元素属性值。name-变量名称，attr为UI元素的属性名称，** 配合SetControl使用 **
+DyAttrData(name,attr)                       # -> 属性-动态存储变量，适用于，保存UI元素属性值。name-变量名称，attr为UI元素的属性名称，**配合SetControl使用**
 DyJsonData(name,sequence)                   # -> json-动态存储变量，适用于，保存页面返回json中的指定值。 name-变量名称，sequence是指访问json的序列串
                                                     示例,页面返回 {"a":1,
                                                             "b":[1,2,3,4],
@@ -263,8 +263,8 @@ DyJsonData(name,sequence)                   # -> json-动态存储变量，适�
                                                         DyJsonData("var3","f.g.2")  #var3值为 9
                                                         DyJsonData("var4","h.0.j")  #var4值为 11
 DyStrData(name, regx, index)                # -> 字符串-动态存储变量，适用于，保存页面html中指定的值。 name-变量名称，regx已编译的正则表达式，index指定索引，默认0
-GetAttribute(attr)                          # -> 获取元素指定属性的值， ** 配合SetControl使用 **
-GetText()                                   # -> 获取元素text值，** 配合SetControl使用 **
+GetAttribute(attr)                          # -> 获取元素指定属性的值， **配合SetControl使用**
+GetText()                                   # -> 获取元素text值，**配合SetControl使用**
 GetVar(name)                                # -> 获取指定变量的值
 SetVar(name,value)                          # -> 设置指定变量的值
 ```
@@ -272,51 +272,51 @@ SetVar(name,value)                          # -> 设置指定变量的值
 ### WebWait methods --> 用于时间的控制
 ```
 TimeSleep(seconds)                   # -> 指定等待时间(秒钟)
-WaitForAppearing()                   # -> 等待元素出现(可能是隐藏，不可见的)，** 配合SetControl使用 **
-WaitForDisappearing()                # -> 等待元素消失，** 配合SetControl使用 **
-WaitForVisible()                     # -> 等待元素可见，** 配合SetControl使用 **
+WaitForAppearing()                   # -> 等待元素出现(可能是隐藏，不可见的)，**配合SetControl使用**
+WaitForDisappearing()                # -> 等待元素消失，**配合SetControl使用**
+WaitForVisible()                     # -> 等待元素可见，**配合SetControl使用**
 ```
 
 ### WebVerify methods --> 用于验证
 ```
 VerifyAlertText(text)                        # -> 验证alert弹窗，包含文本text
-VerifyElemAttr(attr_name,expect_value)       # -> 验证元素属性attr_name的值，包含值expect_value,** 配合SetControl使用 **
-VerifyElemCounts(num)                        # -> 验证元素数量为num,** 配合SetControl使用 **
-VerifyElemEnabled()                          # -> 验证元素是enabled，** 配合SetControl使用 **
-VerifyElemInnerHtml(expect_text)             # -> 验证元素innerHtml中，包含期望文本， ** 配合SetControl使用 **
-VerifyElemNotEnabled()                       # -> 验证元素是Not Enabled, ** 配合SetControl使用 **
-VerifyElemNotVisible()                       # -> 验证元素是不可见的，** 配合SetControl使用 **
-VerifyElemVisible()                          # -> 验证元素是可见的， ** 配合SetControl使用 **
+VerifyElemAttr(attr_name,expect_value)       # -> 验证元素属性attr_name的值，包含值expect_value,**配合SetControl使用**
+VerifyElemCounts(num)                        # -> 验证元素数量为num,**配合SetControl使用**
+VerifyElemEnabled()                          # -> 验证元素是enabled，**配合SetControl使用**
+VerifyElemInnerHtml(expect_text)             # -> 验证元素innerHtml中，包含期望文本， **配合SetControl使用**
+VerifyElemNotEnabled()                       # -> 验证元素是Not Enabled, **配合SetControl使用**
+VerifyElemNotVisible()                       # -> 验证元素是不可见的，**配合SetControl使用**
+VerifyElemVisible()                          # -> 验证元素是可见的， **配合SetControl使用**
 VerifyTitle(title)                           # -> 验证浏览器标题为title
 VerifyURL(url)                               # -> 验证浏览器当前url为期望值
 ```
 
 ### WebActions methods --> 用于浏览器操作
 ```
-Alt(key)                     # -> 在指定元素上执行alt组合事件，** 配合SetControl使用 **
-Backspace()                  # -> 在指定输入框发送回退键，** 配合SetControl使用 **
-Click()                      # -> 在指定元素上，左键点击 1次，** 配合SetControl使用 **
-ClickAndHold()               # -> 在指定元素上， 按压press住，** 配合SetControl使用 **
-Ctrl(key)                    # ->  在指定元素上执行ctrl组合键事件，** 配合SetControl使用 **
-DeSelectByIndex(index)       # -> 通过索引，取消选择下拉框选项，** 配合SetControl使用 **
-DeSelectByText(text)         # -> 通过文本值，取消选择下拉框选项，** 配合SetControl使用 **
-DeSelectByValue(value)       # -> 通过value值，取消选择下拉框选项，** 配合SetControl使用 **
-DoubleClick()                # -> 鼠标左键点击2次，** 配合SetControl使用 **
-Enter()                      # -> 在指定输入框发送回回车键,** 配合SetControl使用 **
-Escape()                     # -> 在指定输入框发送回退出键,** 配合SetControl使用 **
-Focus()                      # -> 在指定输入框发送 Null,用于设置焦点，** 配合SetControl使用 **
-MouseOver()                  # -> 指定元素上，鼠标悬浮，** 配合SetControl使用 **
+Alt(key)                     # -> 在指定元素上执行alt组合事件，**配合SetControl使用**
+Backspace()                  # -> 在指定输入框发送回退键，**配合SetControl使用**
+Click()                      # -> 在指定元素上，左键点击 1次，**配合SetControl使用**
+ClickAndHold()               # -> 在指定元素上， 按压press住，**配合SetControl使用**
+Ctrl(key)                    # ->  在指定元素上执行ctrl组合键事件，**配合SetControl使用**
+DeSelectByIndex(index)       # -> 通过索引，取消选择下拉框选项，**配合SetControl使用**
+DeSelectByText(text)         # -> 通过文本值，取消选择下拉框选项，**配合SetControl使用**
+DeSelectByValue(value)       # -> 通过value值，取消选择下拉框选项，**配合SetControl使用**
+DoubleClick()                # -> 鼠标左键点击2次，**配合SetControl使用**
+Enter()                      # -> 在指定输入框发送回回车键,**配合SetControl使用**
+Escape()                     # -> 在指定输入框发送回退出键,**配合SetControl使用**
+Focus()                      # -> 在指定输入框发送 Null,用于设置焦点，**配合SetControl使用**
+MouseOver()                  # -> 指定元素上，鼠标悬浮，**配合SetControl使用**
 MoveAndDropTo()              # -> 暂不支持
-ReleaseClick()               # -> 在指定元素上，释放按压操作，** 配合SetControl使用 **
-RightClick()                 # -> 在指定元素上，鼠标右键点击1次，** 配合SetControl使用 **
-SelectByIndex(index)         # -> 通过索引，选择下拉框选项，** 配合SetControl使用 **
-SelectByText(text)           # -> 通过文本值，选择下拉框选项，** 配合SetControl使用 **
-SelectByValue(value)         # -> 通过value值，选择下拉框选项，** 配合SetControl使用 **
-SendKeys(value)              # -> 在指定元素上，输入文本，** 配合SetControl使用 **
-Space()                      # -> 在指定元素上,发送空格，** 配合SetControl使用 **
-Tab()                        # -> 在指定元素上,发送回制表键，** 配合SetControl使用 **
+ReleaseClick()               # -> 在指定元素上，释放按压操作，**配合SetControl使用**
+RightClick()                 # -> 在指定元素上，鼠标右键点击1次，**配合SetControl使用**
+SelectByIndex(index)         # -> 通过索引，选择下拉框选项，**配合SetControl使用**
+SelectByText(text)           # -> 通过文本值，选择下拉框选项，**配合SetControl使用**
+SelectByValue(value)         # -> 通过value值，选择下拉框选项，**配合SetControl使用**
+SendKeys(value)              # -> 在指定元素上，输入文本，**配合SetControl使用**
+Space()                      # -> 在指定元素上,发送空格，**配合SetControl使用**
+Tab()                        # -> 在指定元素上,发送回制表键，**配合SetControl使用**
 Upload(filename)             # -> 暂不支持。非原生，需要第三方工具
-UploadType(file_path)        # -> 上传文件，仅原生file文件框, 如： <input type="file" ...>, ** 配合SetControl使用 **
+UploadType(file_path)        # -> 上传文件，仅原生file文件框, 如： <input type="file" ...>, **配合SetControl使用**
 ```
 
 
