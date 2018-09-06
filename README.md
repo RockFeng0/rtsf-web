@@ -165,6 +165,7 @@ wrnode c:\selenium-server-standalone-3.14.0.jar --port 5555 --hub-ip 192.168.0.1
 
 #### 执行分布式测试
 远程执行测试用例，也就是selnium grid分布式执行测试用例，是指使用webdriver.Remote驱动各个浏览器进行测试
+
 简单理解下，创建了主机，玩家也上线了，wrdriver将指定的游戏异步发送给这些玩家
 
 查看帮助: wrdriver -h
