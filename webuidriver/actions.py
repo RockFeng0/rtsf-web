@@ -176,7 +176,7 @@ class Web(object):
         except:
             pass
         finally:
-            Web.__driver=None    
+            Web.driver=None    
                     
 class WebElement(object):
     
