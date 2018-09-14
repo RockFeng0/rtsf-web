@@ -67,7 +67,8 @@ class TestActions(unittest.TestCase):
         WebElement.SetControl(by = "id", value = "su")        
         WebContext.DyAttrData("su", "value")
         
-        Web.NavigateTo("http://bztest.djtest.cn/background/pass/247686389303191")        
+        Web.NavigateTo("http://bztest.djtest.cn/background/pass/247686389303191")
+        # { "code": 1, "desc": "成功" }    
         WebContext.DyJsonData("desc", "desc")
         
         self.assertEqual(WebContext.glob, {'url': 'https://www.baidu.com', 'title': '百度一下，你就知道', 'su': '百度一下', 'desc': '成功'})        
