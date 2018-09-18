@@ -32,7 +32,7 @@ class TestSeleniumJar(unittest.TestCase):
     
     @classmethod
     def tearDownClass(cls):
-        cls.hub.stop_server()        
+        cls.hub.stop_server()
         cls.node.stop_server()
             
     def test_hub(self):
