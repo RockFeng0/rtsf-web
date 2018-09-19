@@ -1,5 +1,23 @@
 # rtsf-web
  基于rtsf测试框架和selenium程序框架，关键字驱动Web UI层面，进行自动化的功能测试
+ 
+## 环境准备
+1. 安装浏览器
+2. 下载浏览器官方驱动
+3. 设置环境变量，确保驱动可被调用
+
+经过多年的发展WebDriver已经成为了事实上的标准，现在每种浏览器都有独立的官方驱动文件了
+
+Browser | Component
+--------|----------
+Chrome              |[chromedriver(.exe)](http://chromedriver.storage.googleapis.com/index.html)
+Internet Explorer   |[IEDriverServer.exe](http://selenium-release.storage.googleapis.com/index.html)
+Edge                |[MicrosoftWebDriver.msi](http://go.microsoft.com/fwlink/?LinkId=619687)
+Firefox 47+         |[geckodriver(.exe)](https://github.com/mozilla/geckodriver/releases/)
+PhantomJS           |[phantomjs(.exe)](http://phantomjs.org/)
+Opera               |[operadriver(.exe)](https://github.com/operasoftware/operachromiumdriver/releases)
+Safari              |[SafariDriver.safariextz](http://selenium-release.storage.googleapis.com/index.html)
+
 
 ## 编写测试用例，模板基于rtsf
 
