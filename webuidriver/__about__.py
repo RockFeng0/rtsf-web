@@ -19,7 +19,7 @@ UI and Web Http automation frame for python.
 
 '''
 
-__title__           = "webuidriver"
+__title__           = "rtsf-web"
 __short_desc__      = "only for web ui test, base on rtsf"
 __version__         = 1.1
 __autor__           = u"罗科峰"
