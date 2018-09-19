@@ -17,7 +17,7 @@ Firefox 47+         |[geckodriver(.exe)](https://github.com/mozilla/geckodriver/
 PhantomJS           |[phantomjs(.exe)](http://phantomjs.org/)
 Opera               |[operadriver(.exe)](https://github.com/operasoftware/operachromiumdriver/releases)
 Safari              |[SafariDriver.safariextz](http://selenium-release.storage.googleapis.com/index.html)
-
+selenium-server     |[selenium-server-standalone.jar](http://selenium-release.storage.googleapis.com/index.html)
 
 ## 编写测试用例，模板基于rtsf
 
