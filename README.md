@@ -2,9 +2,12 @@
  基于rtsf测试框架和selenium程序框架，关键字驱动Web UI层面，进行自动化的功能测试
  
 ## 环境准备
+
+### 安装浏览器驱动和下载selenium-server.jar
 1. 安装浏览器
 2. 下载浏览器官方驱动
 3. 设置环境变量，确保驱动可被调用
+4. 下载 selenium-server
 
 经过多年的发展WebDriver已经成为了事实上的标准，现在每种浏览器都有独立的官方驱动文件了
 
@@ -18,6 +21,14 @@ PhantomJS           |[phantomjs(.exe)](http://phantomjs.org/)
 Opera               |[operadriver(.exe)](https://github.com/operasoftware/operachromiumdriver/releases)
 Safari              |[SafariDriver.safariextz](http://selenium-release.storage.googleapis.com/index.html)
 **selenium-server** |[selenium-server-standalone.jar](http://selenium-release.storage.googleapis.com/index.html)
+
+
+### 安装git
+在安装rtsf-web的时候，一些依赖需要安装，但是这些依赖并未放到pip中，所以临时使用了git安装的方案，安装一下就好。[下载git](https://git-scm.com/downloads/)
+
+### 安装rtsf-web
+python setup.py install
+
 
 ## 编写测试用例，模板基于rtsf
 
