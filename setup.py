@@ -30,9 +30,9 @@ install_requires = [
     "rtsf",
 ]
 
-dependency_links=[
-"git+https://github.com/RockFeng0/rtsf.git#egg=rtsf-0"
-]
+# dependency_links=[
+# "git+https://github.com/RockFeng0/rtsf.git#egg=rtsf-0"
+# ]
 
 setup(
         name = __about__.__title__,
@@ -46,7 +46,7 @@ setup(
         packages=find_packages(exclude=()),        
         keywords='test web ui',
         install_requires=install_requires,
-        dependency_links=dependency_links,
+#         dependency_links=dependency_links,
         extras_require={},
         entry_points={
         'console_scripts': [
