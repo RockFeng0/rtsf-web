@@ -143,6 +143,8 @@ pip install rtsf-web
 ### wldriver(web local driver)本地执行
 本地执行测试用例，是指直接使用webdriver中各个浏览器的驱动，比如webdriver.Chrome等
 
+![wldriver-h.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/wldriver-h.png)
+
 查看帮助: wldriver -h
 选填：
 - 设置浏览器(chrome、firefox),默认是谷歌浏览器:      --browser chrome
@@ -154,11 +156,16 @@ pip install rtsf-web
 wldriver --browser chrome C:\f_disk\BaiduNetdiskDownload\rtsf-web\tests\data\test_case.yaml
 ```
 
+![wldriver-case.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/wldriver-case.png)
+
+
 ### wrdriver(web remote driver)远程执行，即selnium grid分布式模式
 该模式，遵循selnium grid要求，需要开启hub和node, rtsf-web提供两个命令: wrhub和wrnode
 
 #### 开启hub
 简单理解下hub, 玩局域网游戏，我们先要建立主机，那么hub可以理解为主机的概念
+
+![wrhub-command.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/wrhub-command.png)
 
 查看帮助: wrhub -h
 选填：
@@ -172,6 +179,8 @@ wrhub c:\selenium-server-standalone-3.14.0.jar --port 4444 --java-path C:\tmp\Ja
 
 #### 开启node
 简单理解下node, 游戏主机创建好，玩家需要加入，那么node可以理解为加入主机的玩家
+
+![wrnode-command.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/wrnode-command.png)
 
 查看帮助: wrnode -h
 选填：
@@ -192,6 +201,8 @@ wrnode c:\selenium-server-standalone-3.14.0.jar --port 5555 --hub-ip 192.168.0.1
 远程执行测试用例，也就是selnium grid分布式执行测试用例，是指使用webdriver.Remote驱动各个浏览器进行测试
 
 简单理解下，创建了主机，玩家也上线了，wrdriver将指定的游戏异步发送给这些玩家
+
+![wrdriver-command.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/wrdriver-command.png)
 
 查看帮助: wrdriver -h
 选填：
