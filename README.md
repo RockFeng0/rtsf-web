@@ -36,7 +36,7 @@ pip install rtsf-web
 ### 如何获取控件
 web控件元素的获取，遵循selenium的规则，可以通过下述方式来定位元素控件:  id、xpath、link text、partial link text、name、tag name、class name、css selector
 
-常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具:
+常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具。如下图，使用chrome开发模式，采用css和xpath两种方式定位输入框:
 
 ![chrome-deployment-tools.gif](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
 
