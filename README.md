@@ -36,9 +36,14 @@ pip install rtsf-web
 ### 如何获取控件
 web控件元素的获取，遵循selenium的规则，可以通过下述方式来定位元素控件:  id、xpath、link text、partial link text、name、tag name、class name、css selector
 
-常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具。如下图，使用chrome开发模式，采用css和xpath两种方式定位输入框:
-
+推荐常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具。如下图，使用chrome开发模式，采用css和xpath两种方式定位输入框:
 ![chrome-deployment-tools.gif](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
+
+另一个工具，selenium IDE，官方推出的带有界面的工具
+![selenium-ide.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/selenium-ide.png)
+
+另外， 简单解释一下，为什么不推荐使用，Selenium IDE? 从selenium1.0开始，selenium ide曾经给我惊艳，可以录制、定位、生成脚本等，很优秀，但是selenium2.0后，再也没有用了。一方面由于是基于旧技术实现，在火狐55及之后的新版本上不再支持了，虽然很好用，但是退出历史舞台了； 另一方面，firefox和chrome等浏览器，web开发工具功能强大，安装简单，对元素的定位和调试提供了非常便捷的方式。
+
 
 ### 基本用例
 
