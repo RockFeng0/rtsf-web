@@ -38,7 +38,7 @@ web控件元素的获取，遵循selenium的规则，可以通过下述方式来
 
 常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具:
 
-![chrome-deployment-tools.gif](![wldriver-h.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
+![chrome-deployment-tools.gif](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
 
 ### 基本用例
 
