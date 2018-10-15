@@ -33,6 +33,13 @@ pip install rtsf-web
 - 常量的定义， glob_var 和  glob_regx
 - 模板常用的关键字，参见 [rtsf](https://github.com/RockFeng0/rtsf)介绍
 
+### 如何获取控件
+web控件元素的获取，遵循selenium的规则，可以通过下述方式来定位元素控件:  id、xpath、link text、partial link text、name、tag name、class name、css selector
+
+常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具:
+
+![chrome-deployment-tools.gif](![wldriver-h.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
+
 ### 基本用例
 
 基本用例，是指没有分层的情况下，简单的测试用例
@@ -244,7 +251,7 @@ NewTab()             | |浏览器新开标签页，并将所有焦点指向该�
 PageSource()         | |当前页面源码
 Refresh()            | |浏览器刷新当前页面
 ScreenShoot(pic_path)| |截图当前页面，并为pic_path
-ScrollTo(x,y)        | |移动滚动条至(x,y),如下，X-Y-top :  ScrollTo("0","0"); X-bottom:  ScrollTo("10000","0");Y-bottom:  ScrollTo("0","10000")
+ScrollTo(x,y)        | |移动滚动条至(x,y),如下，X-Y-top :  ScrollTo(、,"0"); X-bottom:  ScrollTo("10000","0");Y-bottom:  ScrollTo("0","10000")
 SetWindowSize(width, height)| |设置浏览器窗口大小
 SwitchToAlert()             | |切换浏览器焦点至alert弹窗
 SwitchToDefaultFrame()      | |切换浏览器焦点至默认frame框, 比如打开的页面有多个iframe的情况
