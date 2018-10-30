@@ -28,6 +28,7 @@ class TestDriver(unittest.TestCase):
     
     def setUp(self):
         self.case_file = r'data\test_case.yaml'
+        self.data_driver_case = r'data\data_driver.yaml'
         self.jar_path =  r'D:\auto\buffer\test\test_rtsf_web\selenium-server-standalone-3.14.0.jar'
         self.java_path = "java"
     
@@ -53,13 +54,19 @@ class TestDriver(unittest.TestCase):
         hub.stop_server()        
         node.stop_server()
         
+    def test_LocalDriver_data_driver(self):
+        runner = TestRunner(runner = LocalDriver).run(self.data_driver_case)
+        html_report = runner.gen_html_report()
+        print(html_report)
+        self.assertIsInstance(html_report, (list, tuple))
+        
 if __name__ == "__main__":
 #     logger.setup_logger("debug")
-    unittest.main()
-#     suite = unittest.TestSuite()
-#     suite.addTest(TestDriver("test_LocalDriver"))
-#     runner = unittest.TextTestRunner(verbosity=2)
-#     runner.run(suite)    
+#     unittest.main()
+    suite = unittest.TestSuite()
+    suite.addTest(TestDriver("test_LocalDriver_data_driver"))
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite)    
     
     
     

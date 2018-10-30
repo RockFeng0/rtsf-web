@@ -1,0 +1,14 @@
+# yaml测试用例，模型示例:
+- project:
+    name: xxx系统
+    module: 登陆模块-功能测试
+    data:
+      - csv: devices.csv
+    
+- case:
+    name: web_auto_test_data_driver_demo_$url
+                    
+    steps:  
+        - webdriver:
+            action: ${NavigateTo($url)}
+                        

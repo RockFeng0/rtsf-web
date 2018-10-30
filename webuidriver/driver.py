@@ -30,7 +30,7 @@ class _Driver(Runner):
         super(_Driver,self).__init__()
         self._local_driver = is_local_driver
     
-    def run_test(self, testcase_dict, driver_map):
+    def run_test(self, testcase_dict, variables, driver_map):
         fn, fn_driver = driver_map        
         parser = self.parser        
         tracer = self.tracers[fn]
@@ -52,11 +52,11 @@ class _Driver(Runner):
         functions.update(web_verify_functions)
         functions.update(web_actions_functions)   
         parser.bind_functions(functions)
-        parser.update_binded_variables(_Actions.WebContext.glob)        
-         
-        case_name = testcase_dict["name"]
         
-        ###  to change tracer
+        _Actions.WebContext.glob.update(variables)
+        parser.update_binded_variables(_Actions.WebContext.glob)        
+        
+        case_name = FileSystemUtils.get_legal_filename(parser.eval_content_with_bind_actions(testcase_dict["name"]))
         tracer.start(self.proj_info["module"], case_name, testcase_dict.get("responsible","Administrator"), testcase_dict.get("tester","Administrator"))        
         tracer.section(case_name)
         
