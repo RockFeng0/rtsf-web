@@ -56,10 +56,12 @@ web控件元素的获取，遵循selenium的规则，可以通过下述方式来
     module: 登陆模块-功能测试
     
 - case:
-    # id 必填
-    id: ATP-1
-    # desc 必填
+    # id desc 选填，非约定字段
+    id: ATP-1    
     desc: 测试用例-模板格式的设计-模板（全字段）
+    
+    # name 必填，需确保唯一性
+    name: web_auto_test_demo
     
     # responsible 选填
     responsible: rockfeng0
