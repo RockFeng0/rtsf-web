@@ -275,24 +275,16 @@ UploadType(file_path)        # -> 上传文件，仅原生file文件框, 如： 
 
 在case同级目录中，创建 preference.py, 该文件所定义的 变量、函数，可以被动态加载和引用， 具体参见rtsf的介绍
 
+## 数据驱动与分层用例
 
-## 推荐获取控件的工具
-web ui控件元素的获取，遵循selenium的规则，可以通过下述方式来定位元素控件:  id、xpath、link text、partial link text、name、tag name、class name、css selector
-
-推荐常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具。如下图，使用chrome开发模式，采用css和xpath两种方式定位输入框:
-![chrome-deployment-tools.gif](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
-
-另一个工具，selenium IDE，官方推出的带有界面的工具
-![selenium-ide.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/selenium-ide.png)
-
-那么，我为什么不推荐使用，Selenium IDE? 从selenium1.0开始，selenium ide曾经给我惊艳，可以录制、定位、生成脚本等，很优秀，但是selenium2.0后，再也没有用了。一方面由于是基于旧技术实现，在火狐55及之后的新版本上不再支持了，虽然很好用，但是退出历史舞台了； 另一方面，firefox和chrome等浏览器，web开发工具功能强大，安装简单，对元素的定位和调试提供了非常便捷的方式。
+在[rtsf](https://github.com/RockFeng0/rtsf)项目中，已经有了详细的介绍，rtsf-web也适用
 
 
-## 简单示例
+## 简单实例
 
 依据rtsf和rtsf-web的约定， 做了个web ui测试的示例
 
-### 示例 
+1. 写一个yaml文件
 
 ```
 # test_case.yaml
@@ -356,12 +348,40 @@ web ui控件元素的获取，遵循selenium的规则，可以通过下述方式
             
 ```
 
-### 数据驱动与分层用例
+2. 执行这个用例文件
 
-在[rtsf](https://github.com/RockFeng0/rtsf)项目中，已经有了详细的介绍，rtsf-web也适用
+执行有两种方式：
+
+- run with selenium webdriver
+
+```
+wldriver test_case.yaml
+```
+
+- for selenium grid, run with selenium remote 
+
+```
+# Terminal 1
+wrhub c:\selenium-server-standalone-3.14.0.jar 
+
+# Terminal 2
+wrnode c:\selenium-server-standalone-3.14.0.jar
+
+# Terminal 3
+wrdriver test_case.yaml
+```
 
 
+## 推荐获取控件的工具
+web ui控件元素的获取，遵循selenium的规则，可以通过下述方式来定位元素控件:  id、xpath、link text、partial link text、name、tag name、class name、css selector
 
+推荐常用的工具，一般是 Firefox 或者 Chrome 等浏览器的开发者工具。如下图，使用chrome开发模式，采用css和xpath两种方式定位输入框:
+![chrome-deployment-tools.gif](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/chrome-deployment-tools.gif)
+
+另一个工具，selenium IDE，官方推出的带有界面的工具
+![selenium-ide.png](https://github.com/RockFeng0/img-folder/blob/master/rtsf-web-img/selenium-ide.png)
+
+那么，我为什么不推荐使用，Selenium IDE? 从selenium1.0开始，selenium ide曾经给我惊艳，可以录制、定位、生成脚本等，很优秀，但是selenium2.0后，再也没有用了。一方面由于是基于旧技术实现，在火狐55及之后的新版本上不再支持了，虽然很好用，但是退出历史舞台了； 另一方面，firefox和chrome等浏览器，web开发工具功能强大，安装简单，对元素的定位和调试提供了非常便捷的方式。
 
 
 
