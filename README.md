@@ -35,14 +35,14 @@ pip install rtsf-web
     - 封装常用的selenium方法，为用例提供yaml函数
     - 封装grid模式，支持命令行实现分布式部署
    
-   查看[rtsf](https://github.com/RockFeng0/rtsf)项目用法
+[查看rtsf项目用法](https://github.com/RockFeng0/rtsf)
 
 
 ## 命令介绍
 
 安装完成后，有两个命令用于执行yaml测试用例: 
 - wldriver命令，web localhost driver，一般情况下，都是用这个命令执行yaml用例
-- wrdriver命令，web remote driver， 分布式部署的grid模式下，使用该命令运行yaml用例，它会在找到所有hub的所有node机器，并在所有这些机器上运行用例。
+- wrdriver命令，web remote driver， 分布式部署的grid模式下，使用该命令运行yaml用例，它可以指定任意hub中的所有node机器，并在所有这些机器上运行用例。
 
 安装完成后，有两个命令用于部署selenium grid模式：
 - wrhub命令，设置运行该命令的当前pc为一个hub，允许node机器接入
@@ -282,7 +282,11 @@ UploadType(file_path)        # -> 上传文件，仅原生file文件框, 如： 
 
 ## 简单实例
 
-依据rtsf和rtsf-web的约定， 做了个web ui测试的示例
+依据rtsf和rtsf-web的约定， 做了几个web ui测试的示例
+
+### 常规测试项目
+
+常规： 运行一个 yaml文件 或者 一个存放yaml文件的文件夹
 
 1. 写一个yaml文件
 
@@ -370,6 +374,21 @@ wrnode c:\selenium-server-standalone-3.14.0.jar
 # Terminal 3
 wrdriver test_case.yaml
 ```
+
+### 并行的测试项目
+
+您可以选择，在多台设备上，使用wldriver运行不同模块的用例，然后，在每台机器上面，去收集报告，如果，这些设备离你很远，我想就鞭长莫及了，更加优雅的方式是：
+
+首先，假设，所有机器，都已经安装好了环境
+1. 划分模块用例，比如，我分了三个并行的测试模块用例A,B,C
+2. 用一台机器作为hub，分别为这三个模块用例设置端口,比如: 192.168.1.2:6000,192.168.1.2:7000,192.168.1.2:8000
+3. 另外找三台机器作为node，分别连上步骤2的hub
+4. 在任意一台机器上，开启三个终端，执行下述命令，最后，您可以下达执行命令的机器上面，收集到所有报告
+
+````wrdriver c:\A --ip 192.168.1.2 --port 6000
+wrdriver c:\B --ip 192.168.1.2 --port 7000
+wrdriver c:\C --ip 192.168.1.2 --port 8000````
+
 
 
 ## 推荐获取控件的工具
