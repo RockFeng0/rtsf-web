@@ -385,9 +385,11 @@ wrdriver test_case.yaml
 3. 另外找三台机器作为node，分别连上步骤2的hub
 4. 在任意一台机器上，开启三个终端，执行下述命令，最后，您可以下达执行命令的机器上面，收集到所有报告
 
-````wrdriver c:\A --ip 192.168.1.2 --port 6000
+```
+wrdriver c:\A --ip 192.168.1.2 --port 6000
 wrdriver c:\B --ip 192.168.1.2 --port 7000
-wrdriver c:\C --ip 192.168.1.2 --port 8000````
+wrdriver c:\C --ip 192.168.1.2 --port 8000
+```
 
 
 
