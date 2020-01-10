@@ -19,7 +19,6 @@ UI and Web Http automation frame for python.
 
 '''
 
-from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
@@ -79,7 +78,7 @@ class Web(object):
     @staticmethod
     def SwitchToDefaultFrame():        
         try:
-            Web.driver.switch_to_default_content()
+            Web.driver.switch_to.default_content()
         except:
             return False
     
@@ -113,7 +112,26 @@ class Web(object):
         except:            
             print("Waring: Timeout at %d seconds. Pop Window Not Found.")
             return False
-            
+    
+    @staticmethod
+    def SwitchToDefaultContext():
+        ''' APP应用，切换到默认上下文 '''
+        try:
+            Web.driver.switch_to.context(Web.driver.contexts[0])
+        except:
+            return False
+        
+    @staticmethod
+    def SwitchToNewContext():
+        ''' APP应用，切换到新的上下文 '''
+        try:
+            WebDriverWait(Web.driver, 10).until(lambda driver: len(driver.contexts) >= 2)
+            new_context = Web.driver.contexts[-1]
+            Web.driver.switch_to.context(new_context)       
+        except:            
+            print("Waring: Timeout at 10 seconds. New context Not Found.")
+            return False
+        
     @staticmethod
     def SwitchToAlert(): 
         ''' <input value="Test" type="button" onClick="alert('OK')" > '''
@@ -198,7 +216,7 @@ class WebElement(object):
     @classmethod
     def _element(cls):
         '''   find the element with controls '''
-        if not cls.__is_selector():
+        if not cls._is_selector():
             raise Exception("Invalid selector[%s]." %cls.__control["by"])
         
         driver = Web.driver
@@ -220,7 +238,7 @@ class WebElement(object):
     @classmethod
     def _elements(cls):
         '''   find the elements with controls '''
-        if not cls.__is_selector():
+        if not cls._is_selector():
             raise Exception("Invalid selector[%s]." %cls.__control["by"])
         
         driver = Web.driver
@@ -233,7 +251,7 @@ class WebElement(object):
        
     
     @classmethod
-    def __is_selector(cls):
+    def _is_selector(cls):
         all_selectors = (By.CLASS_NAME, By.CSS_SELECTOR, By.ID, By.LINK_TEXT, By.NAME, By.PARTIAL_LINK_TEXT, By.TAG_NAME, By.XPATH)
                         
         if cls.__control["by"] in all_selectors:
@@ -450,10 +468,11 @@ class WebVerify(WebElement):
         @param attr_name: name of element attribute 
         @param expet_value: expect attribute value
         '''
-        if expect_value in cls._element().get_attribute(attr_name):
-            return True
-        else:
-            return False
+        try:
+            result = expect_value in cls._element().get_attribute(attr_name)
+        except:
+            result = False
+        return result
     
     @classmethod
     def VerifyElemCounts(cls, num):        
