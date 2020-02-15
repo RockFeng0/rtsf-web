@@ -198,7 +198,7 @@ class Web(object):
                     
 class WebElement(object):
     
-    __control = {
+    _control = {
         "by":None,
         "value":None, 
         "index":0,
@@ -207,45 +207,45 @@ class WebElement(object):
                 
     @classmethod
     def SetControl(cls,**kwargs):
-        cls.__control.update(kwargs)
+        cls._control.update(kwargs)
     
     @classmethod
     def GetControl(cls):
-        return cls.__control
+        return cls._control
                 
     @classmethod
     def _element(cls):
         '''   find the element with controls '''
         if not cls._is_selector():
-            raise Exception("Invalid selector[%s]." %cls.__control["by"])
+            raise Exception("Invalid selector[%s]." %cls._control["by"])
         
         driver = Web.driver
         try:            
-            elements = WebDriverWait(driver, cls.__control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls.__control["by"], cls.__control["value"]))
+            elements = WebDriverWait(driver, cls._control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls._control["by"], cls._control["value"]))
         except:                        
-            raise Exception("Timeout at %d seconds.Element(%s) not found." %(cls.__control["timeout"],cls.__control["by"]))
+            raise Exception("Timeout at %d seconds.Element(%s) not found." %(cls._control["timeout"],cls._control["by"]))
         
-        if len(elements) < cls.__control["index"] + 1:                    
-            raise Exception("Element [%s]: Element Index Issue! There are [%s] Elements! Index=[%s]" % (cls.__name__, len(elements), cls.__control["index"]))
+        if len(elements) < cls._control["index"] + 1:                    
+            raise Exception("Element [%s]: Element Index Issue! There are [%s] Elements! Index=[%s]" % (cls.__name__, len(elements), cls._control["index"]))
         
         if len(elements) > 1:              
-            print("Element [%s]: There are [%d] elements, choosed index=%d" %(cls.__name__,len(elements),cls.__control["index"]))
+            print("Element [%s]: There are [%d] elements, choosed index=%d" %(cls.__name__,len(elements),cls._control["index"]))
         
-        elm = elements[cls.__control["index"]]
-        cls.__control["index"] = 0        
+        elm = elements[cls._control["index"]]
+        cls._control["index"] = 0        
         return elm
     
     @classmethod
     def _elements(cls):
         '''   find the elements with controls '''
         if not cls._is_selector():
-            raise Exception("Invalid selector[%s]." %cls.__control["by"])
+            raise Exception("Invalid selector[%s]." %cls._control["by"])
         
         driver = Web.driver
         try:            
-            elements = WebDriverWait(driver, cls.__control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls.__control["by"], cls.__control["value"]))
+            elements = WebDriverWait(driver, cls._control["timeout"]).until(lambda driver: getattr(driver,"find_elements")(cls._control["by"], cls._control["value"]))
         except:            
-            raise Exception("Timeout at %d seconds.Element(%s) not found." %(cls.__control["timeout"],cls.__control["by"]))
+            raise Exception("Timeout at %d seconds.Element(%s) not found." %(cls._control["timeout"],cls._control["by"]))
             
         return elements
        
@@ -254,10 +254,10 @@ class WebElement(object):
     def _is_selector(cls):
         all_selectors = (By.CLASS_NAME, By.CSS_SELECTOR, By.ID, By.LINK_TEXT, By.NAME, By.PARTIAL_LINK_TEXT, By.TAG_NAME, By.XPATH)
                         
-        if cls.__control["by"] in all_selectors:
+        if cls._control["by"] in all_selectors:
             return True
         
-        print("Warning: selector[%s] should be in %s" %(cls.__control["by"],all_selectors))
+        print("Warning: selector[%s] should be in %s" %(cls._control["by"],all_selectors))
         return False
 
 class WebContext(WebElement):
@@ -379,6 +379,22 @@ class WebWait(WebElement):
         return result
     
 class WebVerify(WebElement):
+    
+    @classmethod
+    def VerifyVar(cls, name, expect_value):
+        if WebContext.GetVar(name) == expect_value:
+            return True
+        else:
+            return False
+        
+    @classmethod
+    def VerifyText(cls, text):
+        # 元素text值，为text
+        try:
+            result = cls._element().text == text
+        except:
+            result = False
+        return result
         
     @classmethod
     def VerifyTitle(cls, title):
