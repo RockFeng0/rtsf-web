@@ -14,8 +14,7 @@ class TestDriver(unittest.TestCase):
     def setUp(self):
         self.case_file = r'data\test_case.yaml'
         self.data_driver_case = r'data\data_driver.yaml'
-        # self.jar_path = r'D:\auto\buffer\test\test_rtsf_web\selenium-server-standalone-3.14.0.jar'
-        self.jar_path = r'C:\Python37\selenium-server-standalone-3.14.0.jar'
+        self.jar_path = r'D:\auto\buffer\test\test_rtsf_web\selenium-server-standalone-3.14.0.jar'
         self.java_path = "java"
 
     def test_LocalDriver(self):
