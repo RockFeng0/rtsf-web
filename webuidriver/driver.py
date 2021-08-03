@@ -1,33 +1,17 @@
 #! python3
 # -*- encoding: utf-8 -*-
-'''
-Current module: webuidriver.driver
-
-Rough version history:
-v1.0    Original version to use
-
-********************************************************************
-    @AUTHOR:  Administrator-Bruce Luo(罗科峰)
-    MAIL:     luokefeng@163.com
-    RCS:      webuidriver.driver,  v1.0 2018年8月20日
-    FROM:   2018年8月20日
-********************************************************************
-======================================================================
-
-Provide a function for the automation test
-
-'''
 
 import re
+
 from rtsf.p_executer import Runner
-from rtsf.p_common import CommonUtils,ModuleUtils,FileSystemUtils
-from rtsf.p_exception import FunctionNotFound,VariableNotFound
+from rtsf.p_common import CommonUtils, ModuleUtils, FileSystemUtils
+from rtsf.p_exception import FunctionNotFound, VariableNotFound
 from webuidriver.remote.SeleniumHatch import SeleniumHatch
 
         
 class _Driver(Runner):     
     def __init__(self, is_local_driver):
-        super(_Driver,self).__init__()
+        super(_Driver, self).__init__()
         self._local_driver = is_local_driver
     
     def run_test(self, testcase_dict, variables, driver_map):
@@ -57,22 +41,25 @@ class _Driver(Runner):
         parser.update_binded_variables(_Actions.WebContext.glob)        
         
         case_name = FileSystemUtils.get_legal_filename(parser.eval_content_with_bind_actions(testcase_dict["name"]))
-        tracer.start(self.proj_info["module"], case_name, testcase_dict.get("responsible","Administrator"), testcase_dict.get("tester","Administrator"))        
+        tracer.start(self.proj_info["module"], case_name,
+                     testcase_dict.get("responsible", "Administrator"),
+                     testcase_dict.get("tester", "Administrator")
+                     )
         tracer.section(case_name)
         
         try:
             tracer.normal("**** bind glob variables")                
-            glob_vars = parser.eval_content_with_bind_actions(testcase_dict.get("glob_var",{}))
+            glob_vars = parser.eval_content_with_bind_actions(testcase_dict.get("glob_var", {}))
             tracer.step("set global variables: {}".format(glob_vars))                
             _Actions.WebContext.glob.update(glob_vars)            
              
             tracer.normal("**** bind glob regular expression")
-            globregx = {k: re.compile(v) for k,v in testcase_dict.get("glob_regx",{}).items()}
+            globregx = {k: re.compile(v) for k, v in testcase_dict.get("glob_regx", {}).items()}
             tracer.step("set global regular: {}".format(globregx))            
             _Actions.WebContext.glob.update(globregx)
                              
             tracer.normal("**** precommand")
-            precommand = testcase_dict.get("pre_command",[])    
+            precommand = testcase_dict.get("pre_command", [])
             parser.eval_content_with_bind_actions(precommand)
             for i in precommand:
                 tracer.step("{}".format(i))
@@ -80,14 +67,14 @@ class _Driver(Runner):
             tracer.normal("**** steps")
             steps = testcase_dict["steps"]
             for step in steps:
-                #print("---")            
-                if not "webdriver" in step:
+                # print("---")
+                if "webdriver" not in step:
                     continue
                 
                 if not step["webdriver"].get("action"):
                     raise KeyError("webdriver.action")            
                 
-                #print(step)
+                # print(step)
                 if step["webdriver"].get("by"):
                     by = parser.eval_content_with_bind_actions(step["webdriver"].get("by"))
                     tracer.normal("preparing: by -> {}".format(by))
@@ -101,12 +88,12 @@ class _Driver(Runner):
                     timeout = parser.eval_content_with_bind_actions(step["webdriver"].get("timeout", 10))
                     tracer.normal("preparing: timeout -> {}".format(timeout))                           
                 
-                    prepare =parser.get_bind_function("SetControl")
-                    prepare(by = by, value = value, index = index, timeout = timeout)
+                    prepare = parser.get_bind_function("SetControl")
+                    prepare(by=by, value=value, index=index, timeout=timeout)
                                 
                 result = parser.eval_content_with_bind_actions(step["webdriver"]["action"])
-                #print(":",result)           
-                if result == False:
+                # print(":",result)
+                if result is False:
                     tracer.fail(step["webdriver"]["action"])
                 else:
                     tracer.ok(step["webdriver"]["action"])
@@ -118,40 +105,49 @@ class _Driver(Runner):
                 tracer.step("{}".format(i))
             
             tracer.normal("**** verify")
-            verify = testcase_dict.get("verify",[])
+            verify = testcase_dict.get("verify", [])
             result = parser.eval_content_with_bind_actions(verify)
-            for v, r in zip(verify,result):
-                if r == False:
-                    tracer.fail(u"{} --> {}".format(v,r))
+            for v, r in zip(verify, result):
+                if r is False:
+                    tracer.fail(u"{} --> {}".format(v, r))
                 else:
-                    tracer.ok(u"{} --> {}".format(v,r))
+                    tracer.ok(u"{} --> {}".format(v, r))
                         
         except KeyError as e:
-            tracer.error("Can't find key[%s] in your testcase." %e)
+            tracer.error("Can't find key[%s] in your testcase." % e)
         except FunctionNotFound as e:
             tracer.error(e)
         except VariableNotFound as e:
             tracer.error(e)
         except Exception as e:
-            tracer.error("%s\t%s" %(e,CommonUtils.get_exception_error()))
+            tracer.error("%s\t%s" % (e, CommonUtils.get_exception_error()))
         finally:
-            #tracer.normal("globals:\n\t{}".format(parser._variables)) 
+            # tracer.normal("globals:\n\t{}".format(parser._variables))
             tracer.stop()
-        return tracer         
-            
+        return tracer
+
+    @property
+    def drivers(self):
+        """return [(device_id: driver)]"""
+        return self._default_drivers
+
+
 class LocalDriver(_Driver):
     _browser = "chrome"
     _download_path = None
     _marionette = False
     
     def __init__(self):
-        super(LocalDriver,self).__init__(is_local_driver = True)        
+        super(LocalDriver, self).__init__(is_local_driver=True)
         
-        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = LocalDriver._browser, 
+        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser=LocalDriver._browser,
                                                                             download_path=LocalDriver._download_path, 
-                                                                            marionette = LocalDriver._marionette)
-        self._default_drivers = [("", SeleniumHatch.gen_local_driver(browser = "chrome", capabilities = chrome_capabilities))]        
-        
+                                                                            marionette=LocalDriver._marionette)
+        self._default_drivers = [
+            ("", SeleniumHatch.gen_local_driver(browser="chrome", capabilities=chrome_capabilities))
+        ]
+
+
 class RemoteDriver(_Driver):
     _browser = "chrome"
     _download_path = None
@@ -160,19 +156,16 @@ class RemoteDriver(_Driver):
     _remote_port = 4444
     
     def __init__(self):
-        super(RemoteDriver,self).__init__(is_local_driver = False)
+        super(RemoteDriver, self).__init__(is_local_driver=False)
                 
-        self._default_devices =[]
+        self._default_devices = []
         
         self._default_drivers = []        
         executors = SeleniumHatch.get_remote_executors(RemoteDriver._remote_ip, RemoteDriver._remote_port)
-        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser = RemoteDriver._browser, 
-                                                                            download_path = RemoteDriver._download_path, 
-                                                                            marionette = RemoteDriver._marionette)
+        chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser=RemoteDriver._browser,
+                                                                            download_path=RemoteDriver._download_path,
+                                                                            marionette=RemoteDriver._marionette)
         for executor in executors:
             fn = FileSystemUtils.get_legal_filename(executor)
             self._default_devices.append(fn)            
             self._default_drivers.append((fn, SeleniumHatch.gen_remote_driver(executor, chrome_capabilities)))            
-            
-    
-            
