@@ -1,35 +1,19 @@
 #! python3
 # -*- encoding: utf-8 -*-
-'''
-Current module: setup
-
-Rough version history:
-v1.0    Original version to use
-
-********************************************************************
-    @AUTHOR:  Administrator-Bruce Luo(罗科峰)
-    MAIL:    lkf20031988@163.com
-    RCS:      setup,v 1.0 2018年8月19日
-    FROM:   2018年8月19日
-********************************************************************
-
-======================================================================
-
-UI and Web Http automation frame for python.
-
-'''
 
 
-
-from webuidriver import __about__
-import os, io, sys
+import os
+import io
+import sys
 from shutil import rmtree
 from setuptools import setup, find_packages, Command
+from webuidriver import __about__
 
 here = os.path.abspath(os.path.dirname(__file__))
 
 with io.open("README.md", encoding='utf-8') as f:
     long_description = f.read()
+
 
 class UploadCommand(Command):
     """ Build and publish this package.
@@ -72,6 +56,7 @@ class UploadCommand(Command):
 
         sys.exit()
 
+
 install_requires = [
     "selenium",
     "requests",
@@ -83,7 +68,7 @@ install_requires = [
 # ]
 
 setup(
-        name = __about__.__title__,
+        name=__about__.__title__,
         version=__about__.__version__,        
         description=__about__.__short_desc__,
         long_description=long_description,
@@ -96,14 +81,14 @@ setup(
         packages=find_packages(exclude=()),        
         keywords='test web ui',
         install_requires=install_requires,
-#         dependency_links=dependency_links,
+        # dependency_links=dependency_links,
         extras_require={},
         entry_points={
             'console_scripts': [
-                'wldriver=webuidriver.cli:local_main_run', # local driver
-                'wrdriver=webuidriver.cli:remote_main_run', # remote driver
-                'wrhub=webuidriver.cli:hub_main_run', # selenium grid hub
-                'wrnode=webuidriver.cli:node_main_run', # selenium grid node
+                'wldriver=webuidriver.cli:local_main_run',  # local driver
+                'wrdriver=webuidriver.cli:remote_main_run',  # remote driver
+                'wrhub=webuidriver.cli:hub_main_run',  # selenium grid hub
+                'wrnode=webuidriver.cli:node_main_run',  # selenium grid node
             ]
         },
         # $ setup.py upload support.
