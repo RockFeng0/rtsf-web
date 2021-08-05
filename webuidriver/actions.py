@@ -1,31 +1,17 @@
+#! python3
 # -*- encoding: utf-8 -*-
-'''
-Current module: rock4.softtest.web.actions
 
-Rough version history:
-v1.0    Original version to use
-v2.0    use rtsf for web driver
-
-********************************************************************
-    @AUTHOR:  Administrator-Bruce Luo(罗科峰)
-    MAIL:    lkf20031988@163.com
-    RCS:      rock4.softtest.web.actions,v 2.0 2018年8月21日
-    FROM:   2017年2月18日
-********************************************************************
-
-======================================================================
-
-UI and Web Http automation frame for python.
-
-'''
-
+import os
+import re
+import json
+import ast
+import time
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-import time,os,re,json,ast
 
 def _parse_string_value(str_value):
     try:
@@ -769,10 +755,3 @@ class WebActions(WebElement):
             cls.SendKeys(file_path)
         else:            
             return False
-        
-
-      
-    
-    
-    
-    
