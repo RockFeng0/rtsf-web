@@ -1,5 +1,5 @@
+#! python3
 # -*- encoding: utf-8 -*-
-
 
 import requests
 import time
@@ -7,7 +7,7 @@ import subprocess
 
 
 class SeleniumJar(object):    
-    def __init__(self, server_jar_full_path, java_exe_full_path = "java"):
+    def __init__(self, server_jar_full_path, java_exe_full_path="java"):
         self._conf = {
             "java_path": java_exe_full_path,
             "jar_path": server_jar_full_path,
@@ -26,13 +26,16 @@ class SeleniumJar(object):
         self.command = [self._conf["java_path"], "-jar", self._conf["jar_path"], "-port", str(port), "-role", "hub"]        
         return self
         
-    def node(self,port, hub_address=("localhost", 4444)):
+    def node(self, port, hub_address=("localhost", 4444)):
         """ java -jar selenium-server.jar -role node -port 5555 -hub http://127.0.0.1:4444/grid/register/
         @param port:  listen port of selenium node
         @param hub_address: hub address which node will connect to 
         """
         self._ip, self._port = hub_address
-        self.command = [self._conf["java_path"], "-jar", self._conf["jar_path"], "-port", str(port), "-role", "node", "-hub", "http://%s:%s/grid/register/" %(self._ip, self._port)]        
+        self.command = [self._conf["java_path"], "-jar", self._conf["jar_path"],
+                        "-port", str(port),
+                        "-role", "node",
+                        "-hub", "http://{0}:{1}/grid/register/".format(self._ip, self._port)]
         return self
     
     def start_server(self):
@@ -59,7 +62,7 @@ class SeleniumJar(object):
         """
         resp = None
         try:
-            resp = requests.get("http://%s:%s" % (self._ip, self._port))
+            resp = requests.get("http://{0}:{1}".format(self._ip, self._port))
 
             if resp.status_code == 200:
                 return True
