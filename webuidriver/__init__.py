@@ -1,4 +1,5 @@
 from .firefox.webdriver import WebDriver as Firefox  # noqa
+from .firefox.firefox_profile import FirefoxProfile  # noqa
 from .chrome.webdriver import WebDriver as Chrome  # noqa
 from .chrome.options import Options as ChromeOptions  # noqa
 from .ie.webdriver import WebDriver as Ie  # noqa
