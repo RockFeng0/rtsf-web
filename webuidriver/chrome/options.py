@@ -36,7 +36,7 @@ class ChromeExperiments(object):
 
 class Options(ChromeOptions):
 
-    def __init__(self, download_path=None):
+    def __init__(self):
         super(ChromeOptions, self).__init__()
         self.add_experimental_option(
             ChromeExperiments.EXCLUDE_SWITCHES["name"], ChromeExperiments.EXCLUDE_SWITCHES["value"]
