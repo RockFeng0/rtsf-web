@@ -3,10 +3,8 @@
 
 import re
 import requests
-# from selenium import webdriver
-from selenium.webdriver import DesiredCapabilities
-
 import webuidriver
+from selenium.webdriver import DesiredCapabilities
 
         
 class SeleniumHatch(object):
@@ -40,19 +38,14 @@ class SeleniumHatch(object):
         if browser == "FIREFOX":
             cap['marionette'] = marionette
             if download_path:
-                fp = webdriver.FirefoxProfile() 
-                fp.set_preference("browser.download.folderList", 2)  # 设置Firefox的默认 下载 文件夹。0是桌面；1是“我的下载”；2是自定义
-                fp.set_preference("browser.download.manager.showWhenStarting", False)
-                fp.set_preference("browser.download.dir", download_path)
-                fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream")
+                fp = webuidriver.FirefoxProfile()
+                fp.set_download(download_path=download_path, file_types="application/octet-stream")
                 cap['firefox_profile'] = fp
                                       
         elif browser == "CHROME":
-            options = webdriver.ChromeOptions()
-            options.add_experimental_option("excludeSwitches", ["ignore-certificate-errors"])
+            options = webuidriver.ChromeOptions()
             if download_path:
-                prefs = {"download.default_directory": download_path}
-                options.add_experimental_option("prefs", prefs)
+                options.set_download(download_path=download_path)
             cap = options.to_capabilities()
         return cap
     
