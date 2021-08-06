@@ -32,22 +32,6 @@ class ChromeExperiments(object):
         }
     }
 
-    @classmethod
-    def preferences(cls, download_path):
-        prefs = {
-            "name": "prefs",
-            "value": {
-                "download.default_directory": "",  # 设置下载路径
-                "profile.default_content_settins.popups": 0,  # 设置为0禁止弹出窗口
-            }
-        }
-
-        if os.path.isdir(download_path):
-            prefs["value"]["download.default_directory"] = download_path
-            return prefs
-        else:
-            raise ValueError("Download path is not a valid directory path.")
-
 
 class Options(ChromeOptions):
 
