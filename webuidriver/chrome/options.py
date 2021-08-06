@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import os
+import copy
 from selenium.webdriver import ChromeOptions
 
 
@@ -37,14 +38,14 @@ class Options(ChromeOptions):
 
     def __init__(self, download_path=None):
         super(ChromeOptions, self).__init__()
-
         self.add_experimental_option(
             ChromeExperiments.EXCLUDE_SWITCHES["name"], ChromeExperiments.EXCLUDE_SWITCHES["value"]
         )
 
-        if os.path.isdir(download_path):
-            ChromeExperiments.PREFS["value"]["download.default_directory"] = download_path
-            self.add_experimental_option(
-                ChromeExperiments.PREFS["name"], ChromeExperiments.PREFS["value"]
-            )
+    def set_download(self, download_path):
+        if not os.path.isdir(download_path):
+            raise ValueError("Download path is not a valid directory path.")
 
+        preferences = copy.deepcopy(ChromeExperiments.PREFS)
+        preferences["value"]["download.default_directory"] = download_path
+        self.add_experimental_option(preferences["name"], preferences["value"])
