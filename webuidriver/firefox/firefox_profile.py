@@ -2,13 +2,13 @@
 # -*- encoding: utf-8 -*-
 
 import os
-from selenium.webdriver import FirefoxProfile
+from selenium.webdriver import FirefoxProfile as BaseFirefoxProfile
 
 
-class FirefoxProfilePreferences(FirefoxProfile):
+class FirefoxProfile(BaseFirefoxProfile):
 
     def __init__(self, ):
-        super(FirefoxProfile, self).__init__()
+        super(BaseFirefoxProfile, self).__init__()
 
     def set_download(self, download_path, file_types, folder_type=2, is_show=False):
         """
