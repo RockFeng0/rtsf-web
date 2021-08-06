@@ -3,8 +3,10 @@
 
 import re
 import requests
-from selenium import webdriver
+# from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
+
+import webuidriver
 
         
 class SeleniumHatch(object):
@@ -63,7 +65,7 @@ class SeleniumHatch(object):
         """
         # selenium requires browser's driver and PATH env. Firefox's driver is required for selenium3.0            
         firefox_profile = capabilities.pop("firefox_profile", None)
-        return webdriver.Remote(executor, desired_capabilities=capabilities, browser_profile=firefox_profile)
+        return webuidriver.Remote(executor, desired_capabilities=capabilities, browser_profile=firefox_profile)
     
     @staticmethod
     def gen_local_driver(browser, capabilities):
@@ -74,10 +76,10 @@ class SeleniumHatch(object):
         """
         if browser == "firefox":
             fp = capabilities.pop("firefox_profile", None)
-            return webdriver.Firefox(desired_capabilities=capabilities, firefox_profile=fp)
+            return webuidriver.Firefox(desired_capabilities=capabilities, firefox_profile=fp)
                    
         elif browser == "chrome":            
-            return webdriver.Chrome(desired_capabilities=capabilities)
+            return webuidriver.Chrome(desired_capabilities=capabilities)
         
         else:
             raise TypeError("Unsupport browser {}".format(browser))
