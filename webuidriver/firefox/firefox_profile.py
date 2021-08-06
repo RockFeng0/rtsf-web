@@ -20,7 +20,7 @@ class FirefoxProfile(BaseFirefoxProfile):
         :return: None
         """
 
-        if os.path.isdir(download_path):
+        if not os.path.isdir(download_path):
             raise ValueError("Download path is not a valid directory path.")
 
         self.set_preference("browser.download.dir", download_path)
