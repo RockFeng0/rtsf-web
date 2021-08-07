@@ -26,17 +26,64 @@ Safari              |[SafariDriver.safariextz](http://selenium-release.storage.g
 ### 安装rtsf-web
 pip install rtsf-web
 
-## 简单介绍
+## 简单使用
 
-1. 基本使用，参见rtsf项目的 使用入门
-2. rtsf-web遵循在rtsf项目高阶用法的约定
-3. rtsf-web也就只做了3件事情
-    - 设计Web UI自动化测试yaml用例，并重写Runner.run_test的执行规则
-    - 封装常用的selenium方法，为用例提供yaml函数
-    - 封装grid模式，支持命令行实现分布式部署
+使用rtsf-web简化selenium的使用
+
+1. 本地浏览器驱动
+```
+import webuidriver
+driver = webuidriver.Chrome()  # 返回的driver 是selenium原生对象
+driver.get("http://www.baidu.com")
+
+# until_find.element_by_id(value, timeout=10, wait_displayed=False),返回selenium WebElement原生对象
+driver.until_find.element_by_id("kw").send_keys("hello world.")
+
+# until_find.elements_by_css_selector(value, index=0, timeout=10),返回selenium WebElement原生对象, 默认返回index指定元素
+driver.until_find.elements_by_css_selector("input.bg.s_btn").click()
+driver.close()
+driver.quit()
+```
+
+2. 分布式浏览器驱动(selenium grid)
+```
+# PC A(192.168.1.1) 运行命令:  wrhub.exe selenium-server-standalone-3.14.0.jar --port 4444
+# PC B(192.168.1.2) 运行命令:  wrnode.exe selenium-server-standalone-3.14.0.jar --port 5555 --hub-ip 192.168.1.1 --hub-port 4444
+
+import webuidriver
+from webuidriver.remote.SeleniumHatch import SeleniumHatch
+
+executors = SeleniumHatch.get_remote_executors("192.168.1.1", 4444)
+chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser="chrome")
+driver = webuidriver.Remote(executors[0], desired_capabilities=chrome_capabilities)
+driver.get("http://www.baidu.com")
+driver.until_find.element_by_id("kw").send_keys("hello world.")
+driver.until_find.elements_by_css_selector("input.bg.s_btn").click()
+driver.close()
+driver.quit()
+
+```
+
+3. 给浏览器添加参数（Options）
+```
+import webuidriver
+from webuidriver.chrome.options import ChromeArguments
+opt = webuidriver.ChromeOptions()
+opt.add_argument(ChromeArguments.NO_IMAGES)  # 禁用图片加载
+opt.add_argument(ChromeArguments.HEADLESS)   # 无界面模式
+opt.add_argument(ChromeArguments.INCOGNITO)  # 隐身模式
+opt.add_argument(ChromeArguments.WINDOW_SIZE)  # 置窗口尺寸(1024x650)
+opt.add_argument(ChromeArguments.DISABLE_GPU)  # 禁用gpu渲染
+
+driver = webuidriver.Chrome(options=opt)
+# driver = webuidriver.Remote(executor, desired_capabilities=opt.to_capabilities())
+```
+
+
+## 详细介绍
+介绍如何使用rtsf-web进行YAML格式web UI的自动化测试用例编写，rtsf-web是rtsf框架的插件，所以，基本遵循rtsf的YAML格式约定。    
    
 [查看rtsf项目用法](https://github.com/RockFeng0/rtsf)
-
 
 ## 命令介绍
 
