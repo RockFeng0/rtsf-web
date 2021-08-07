@@ -9,6 +9,10 @@ class UntilFind(object):
     LOC = (By.CLASS_NAME, By.CSS_SELECTOR, By.ID, By.LINK_TEXT, By.NAME, By.PARTIAL_LINK_TEXT, By.TAG_NAME, By.XPATH)
 
     def __init__(self, driver):
+        """
+            element_by_xxx： only return one element
+            elements_by_xxx:  only return the specified index element, default index=0
+        """
         self._driver = driver
         self.element_by_class_name = self._element(By.CLASS_NAME)
         self.element_by_css_selector = self._element(By.CSS_SELECTOR)
