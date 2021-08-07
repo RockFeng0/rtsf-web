@@ -16,6 +16,7 @@ class SeleniumJar(object):
         self._port = 4444
         self.command = []
         self.__subp = None
+        self._block = False
                         
     def hub(self, port):
         """ java -jar selenium-server.jar -role hub -port 4444
@@ -38,9 +39,14 @@ class SeleniumJar(object):
                         "-hub", "http://{0}:{1}/grid/register/".format(self._ip, self._port)]
         return self
     
-    def start_server(self):
-        """start the selenium Remote Server."""        
-        self.__subp = subprocess.Popen(self.command)        
+    def start_server(self, block=False):
+        """start the selenium Remote Server."""
+        self._block = block if type(block) is bool else False
+
+        if self._block:
+            subprocess.call(self.command, shell=True)
+        else:
+            self.__subp = subprocess.Popen(self.command)
         # print("\tselenium jar pid[%s] is running." %self.__subp.pid)
         time.sleep(2)
         
@@ -48,7 +54,8 @@ class SeleniumJar(object):
         """stop the selenium Remote Server
         :return:
         """
-        self.__subp.kill()
+        if self._block is False:
+            self.__subp.kill()
         # print("\tselenium jar pid[%s] is stopped." %self.__subp.pid)
         
     def re_start_server(self):
@@ -60,7 +67,6 @@ class SeleniumJar(object):
         """Determine whether hub server is running
         :return:True or False
         """
-        resp = None
         try:
             resp = requests.get("http://{0}:{1}".format(self._ip, self._port))
 
