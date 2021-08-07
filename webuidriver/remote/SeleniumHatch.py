@@ -27,7 +27,9 @@ class SeleniumHatch(object):
     def get_remote_browser_capabilities(browser="chrome", download_path=None, marionette=False):
         """
         @param browser: firefox chrome opera safari internetexplorer edge htmlunit htmlunitwithjs
-        @param marionette: use firefox's geckodriver if True. selenium 3.x开始，webdriver/firefox/webdriver.py的__init__中，executable_path="geckodriver"; 而2.x是executable_path="wires"; 也就是说， firefox 47以上版本，需要下载第三方driver，即geckodriver。
+        @param marionette: use firefox's geckodriver if True.
+            selenium 3.x开始，webdriver/firefox/webdriver.py的__init__中，executable_path="geckodriver";
+            而selenium2.x是executable_path="wires"; 也就是说， firefox 47以上版本，需要下载第三方driver，即geckodriver。
         @param download_path:  set a download path for browser.
         @return:  return the capabilities of this browser 
         """
