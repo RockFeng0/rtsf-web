@@ -19,14 +19,18 @@ def hub_main_run():
     parser.add_argument(
         '--port', type=int, default=4444,
         help="listen port for hub mode. default port: 4444")
-                
+
+    parser.add_argument(
+        '--background', action="store_true",
+        help="run this command in the background")
+
     parser.add_argument(
         'server_jar', 
         help="selenium server jar path for selenium grid mode")
 
     color_print("webuidriver {}".format(__version__), "GREEN")
     args = parser.parse_args()
-    SeleniumJar(args.server_jar, args.java_path).hub(args.port).start_server()
+    SeleniumJar(args.server_jar, args.java_path).hub(args.port).start_server(block=not args.background)
 
 
 def node_main_run():
@@ -49,12 +53,17 @@ def node_main_run():
         help="hub port which need to connect. default: 4444")
 
     parser.add_argument(
+        '--background', action="store_true",
+        help="run this command in the background")
+
+    parser.add_argument(
         'server_jar', 
         help="selenium server jar path for selenium grid mode")
 
     color_print("webuidriver {}".format(__version__), "GREEN")
     args = parser.parse_args()
-    SeleniumJar(args.server_jar, args.java_path).node(args.port, (args.hub_ip, args.hub_port)).start_server()
+    SeleniumJar(args.server_jar, args.java_path)\
+        .node(args.port, (args.hub_ip, args.hub_port)).start_server(block=not args.background)
     
 
 def local_main_run():
