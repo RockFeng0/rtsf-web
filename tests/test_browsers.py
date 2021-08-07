@@ -6,48 +6,81 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import TimeoutException
+
 import webuidriver
+from webuidriver.chrome.options import ChromeArguments
+from webuidriver.remote.SeleniumJar import SeleniumJar
+from webuidriver.remote.SeleniumHatch import SeleniumHatch
 
 
 class TestDriver(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        opt = webdriver.ChromeOptions()
-        # 不加载图片,加快访问速度
-        opt.add_argument('--blink-settings=imagesEnabled=false')
+        cls.java_path = "java"
+        cls.jar_path = r'D:\auto\buffer\test\test_rtsf_web\seleniumjar\selenium-server-standalone-3.14.0.jar'
 
-        # 无头模式，可不启用界面显示运行
-        # opt.add_argument('--headless')
+        cls.opt = webuidriver.ChromeOptions()
+        cls.opt.add_argument(ChromeArguments.NO_IMAGES)
+        cls.opt.add_argument(ChromeArguments.HEADLESS)
+        cls.opt.add_argument(ChromeArguments.INCOGNITO)
+        cls.opt.add_argument(ChromeArguments.WINDOW_SIZE)
+        cls.opt.add_argument(ChromeArguments.DISABLE_GPU)
 
-        # 此步骤很重要，设置为开发者模式，防止被各大网站识别出来使用了Selenium
-        opt.add_experimental_option('excludeSwitches', ['enable-automation'])
-        # opt.add_experimental_option("debuggerAddress", "127.0.0.1:9999")
-        # opt.add_argument('--proxy--server=127.0.0.1:8080')
+    def test_webuidriver_chrome(self):
+        self.driver = webuidriver.Chrome(options=self.opt)
+        self.driver.get('http://www.baidu.com')
+        time.sleep(1)
 
-        # 禁用浏览器正在被自动化程序控制的提示
-        opt.add_argument('--disable-infobars')
-        # 隐身模式（无痕模式）
-        opt.add_argument('--incognito')
-
-        cls.driver = webuidriver.Chrome(options=opt)
-        cls.driver.get('http://www.baidu.com')
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.driver.close()
-        cls.driver.quit()
-
-    def test_is_selenium_object(self):
         # webuidriver.Chrome 是 webdriver.Chrome 的子类
         self.assertTrue(issubclass(webuidriver.Chrome, webdriver.Chrome))
         self.assertIsInstance(self.driver, webdriver.Chrome)
 
+        self.assertTrue(issubclass(webuidriver.ChromeOptions, webdriver.ChromeOptions))
+
+        self.driver.close()
+        self.driver.quit()
+
+    def test_webuidriver_remote(self):
+        """ Selenium grid mode.
+            You can use SeleniumJar to start service.
+            Also, you can use command lines if you installed rtsf-web, like this:
+            wrhub selenium-server-standalone-3.14.0.jar --port 4444
+            wrnode selenium-server-standalone-3.14.0.jar --port 5555 --hub-ip 10.154.123.74 --hub-port 4444
+        """
+
+        hub = SeleniumJar(self.jar_path, self.java_path).hub(4444)
+        hub.start_server()
+
+        node = SeleniumJar(self.jar_path, self.java_path).node(5555, ("localhost", 4444))
+        node.start_server()
+        executors = SeleniumHatch.get_remote_executors("localhost", 4444)
+
+        # self.driver = webuidriver.Remote(executor, options=self.opt) 与下面语句效果是一样的
+        self.driver = webuidriver.Remote(executors[0], desired_capabilities=self.opt.to_capabilities())
+
+        self.driver.get('http://www.baidu.com')
+        time.sleep(1)
+
+        # webuidriver.Remote 是 webdriver.Chrome 的子类
+        self.assertTrue(issubclass(webuidriver.Chrome, webdriver.Remote))
+        self.assertIsInstance(self.driver, webdriver.Remote)
+
+        self.driver.close()
+        self.driver.quit()
+
+        hub.stop_server()
+        node.stop_server()
+
     def test_property_until_find(self):
+
+        self.driver = webuidriver.Chrome(options=self.opt)
+        self.driver.get('http://www.baidu.com')
+
         # default timeout=10, wait_displayed=False
         self.driver.until_find.element_by_id("kw", timeout=10, wait_displayed=True).send_keys("hello world.")
 
-        # default index = 0, timeout = 10
+        # elements_by_xxx, 默认返回 第一个元素，超时10秒
         try:
             self.driver.until_find.elements_by_css_selector("input.bg.s_btn.not_found", timeout=2)
         except Exception as err:
@@ -63,6 +96,9 @@ class TestDriver(unittest.TestCase):
         self.assertTrue(isinstance(elm, WebElement))
 
         self.driver.until_find.elements_by_css_selector("input.bg.s_btn").click()
+
+        self.driver.close()
+        self.driver.quit()
 
 
 if __name__ == "__main__":
