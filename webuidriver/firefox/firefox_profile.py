@@ -8,7 +8,7 @@ from selenium.webdriver import FirefoxProfile as BaseFirefoxProfile
 class FirefoxProfile(BaseFirefoxProfile):
 
     def __init__(self, ):
-        super(BaseFirefoxProfile, self).__init__()
+        super(FirefoxProfile, self).__init__()
 
     def set_download(self, download_path, file_types, folder_type=2, is_show=False):
         """
