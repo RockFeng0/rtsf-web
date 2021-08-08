@@ -39,7 +39,16 @@ def node_main_run():
     parser.add_argument(
         '--java-path', default='java',
         help="path of java. default is `java` if JAVA_HOME is configured. ")
-        
+
+    # VPN网络或者计算机有多个IP的情况(如VMware Network Adapter VMnet1)，就会出现探测的IP不准确的情况
+    # 使用host 参数可以用于这种情况，指定要注册的IP。通常情况不需要指定
+    parser.add_argument(
+        '--host', default="",
+        help="""
+                IP or hostname : usually determined automatically. 
+                Most commonly useful in exotic network configurations (e.g. network with VPN)
+            """)
+
     parser.add_argument(
         '--port', type=int, default=5555,
         help="listen port for node mode. default port: 5555")
@@ -63,7 +72,7 @@ def node_main_run():
     color_print("webuidriver {}".format(__version__), "GREEN")
     args = parser.parse_args()
     SeleniumJar(args.server_jar, args.java_path)\
-        .node(args.port, (args.hub_ip, args.hub_port)).start_server(block=not args.background)
+        .node((args.host, args.port), (args.hub_ip, args.hub_port)).start_server(block=not args.background)
     
 
 def local_main_run():

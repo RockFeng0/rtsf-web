@@ -27,16 +27,20 @@ class SeleniumJar(object):
         self.command = [self._conf["java_path"], "-jar", self._conf["jar_path"], "-port", str(port), "-role", "hub"]        
         return self
         
-    def node(self, port, hub_address=("localhost", 4444)):
+    def node(self, node_address=("", 5555), hub_address=("localhost", 4444)):
         """ java -jar selenium-server.jar -role node -port 5555 -hub http://127.0.0.1:4444/grid/register/
-        @param port:  listen port of selenium node
+        @param node_address: selenium node(host, port), host usually determined automatically.
         @param hub_address: hub address which node will connect to 
         """
+        host, port = node_address
         self._ip, self._port = hub_address
         self.command = [self._conf["java_path"], "-jar", self._conf["jar_path"],
                         "-port", str(port),
                         "-role", "node",
                         "-hub", "http://{0}:{1}/grid/register/".format(self._ip, self._port)]
+        if host:
+            self.command.extend(['-host', host])
+
         return self
     
     def start_server(self, block=False):
