@@ -44,7 +44,7 @@ class SeleniumJar(object):
         self._block = block if type(block) is bool else False
 
         if self._block:
-            subprocess.call(self.command, shell=True)
+            subprocess.call(self.command)
         else:
             self.__subp = subprocess.Popen(self.command)
         # print("\tselenium jar pid[%s] is running." %self.__subp.pid)
