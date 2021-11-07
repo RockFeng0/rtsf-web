@@ -1,23 +1,12 @@
 #! python3
 # -*- encoding: utf-8 -*-
 
-from webuidriver.remote.until_fiind import UntilFind
+from webuidriver.remote.wait_until import WaitUntil
 from selenium.webdriver.safari.webdriver import WebDriver as SafariWebDriver
 
 
-class WebDriver(SafariWebDriver):
+class WebDriver(SafariWebDriver, WaitUntil):
     def __init__(self, *args, **kwargs):
         SafariWebDriver.__init__(self, *args, **kwargs)
-        self._until_find = UntilFind(self)
+        WaitUntil.__init__(self)
 
-    @property
-    def until_find(self):
-        """
-        :Returns:
-            - UntilFind: an object containing all options for dynamically waiting and finding elements.
-
-        :Usage:
-            element = driver.until_find.element_by_id('#username')
-            element.send_keys("admin")
-        """
-        return self._until_find
