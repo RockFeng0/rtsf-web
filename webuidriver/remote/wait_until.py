@@ -5,6 +5,35 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+class WaitUntil(object):
+    def __init__(self):
+        self._until_find = UntilFind(self)
+        self._until_switch = UntilSwitch(self)
+
+    @property
+    def until_find(self):
+        """
+        :Returns:
+            - UntilFind: an object containing all options for dynamically waiting and finding elements.
+
+        :Usage:
+            element = driver.until_find.element_by_id('#username')
+            element.send_keys("admin")
+        """
+        return self._until_find
+
+    @property
+    def until_switch(self):
+        """
+        :Returns:
+            - UntilSwitch: an object containing all options for dynamically waiting and switch locator.
+
+        :Usage:
+            driver.until_switch.to_window(-1)
+        """
+        return self._until_switch
+
+
 class UntilFind(object):
     LOC = (By.CLASS_NAME, By.CSS_SELECTOR, By.ID, By.LINK_TEXT, By.NAME, By.PARTIAL_LINK_TEXT, By.TAG_NAME, By.XPATH)
 
@@ -76,3 +105,35 @@ class UntilFind(object):
             return elms[index]
 
         return by_func
+
+
+class UntilSwitch(object):
+    LOC = ("window", "frame")
+
+    def __init__(self, driver):
+        """
+            switch_to_xxx： windows and iframe always load slowly, you can use these methods.
+        """
+        self._driver = driver
+        self.to_window = self._switch_to("window")
+        self.to_frame = self._switch_to("frame")
+
+    def _switch_to(self, target):
+        if target not in self.LOC:
+            raise Exception("unknown target locator {}".format(target))
+
+        def _target(index, timeout=10):
+            if target == "window":
+                win_handle = WebDriverWait(self._driver, timeout, ignored_exceptions=IndexError).until(
+                    method=lambda dr: dr.window_handles[index] if dr.window_handles[index] else None,
+                    message="Not found window(index: {0}, timeout: {1})".format(index, timeout)
+                )
+                self._driver.switch_to.window(win_handle)
+            else:
+                WebDriverWait(self._driver, timeout, ignored_exceptions=IndexError).until(
+                    method=lambda dr: True if dr.find_elements_by_tag_name("iframe")[index] else None,
+                    message="Not found iframe(index: {0}, timeout: {1})".format(index, timeout)
+                )
+                self._driver.switch_to.frame(index)
+
+        return _target
