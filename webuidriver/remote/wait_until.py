@@ -1,14 +1,29 @@
 #! python3
 # -*- encoding: utf-8 -*-
 
+from functools import partial
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 
 class WaitUntil(object):
     def __init__(self):
+        self._web_driver_wait = partial(WebDriverWait, driver=self)
         self._until_find = UntilFind(self)
         self._until_switch = UntilSwitch(self)
+
+    @property
+    def web_driver_wait(self):
+        """
+        :Returns:
+            - WebDriverWait
+
+        :Usage:
+            driver.web_driver_wait(timeout=10).until(method, message='')
+            driver.web_driver_wait(timeout=10).until_not(method, message='')
+        """
+        return self._web_driver_wait
 
     @property
     def until_find(self):
