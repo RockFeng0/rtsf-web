@@ -35,6 +35,7 @@ pip install rtsf-web
 import webuidriver
 driver = webuidriver.Chrome()  # 返回的driver 是selenium原生对象
 driver.get("http://www.baidu.com")
+driver.web_driver_wait(timeout=10).until(lambda dr: dr.title == "百度一下，你就知道")  # WebDriverWait.until
 
 # until_find.element_by_id(value, timeout=10, wait_displayed=False),返回selenium WebElement原生对象
 driver.until_find.element_by_id("kw").send_keys("hello world.")
@@ -57,6 +58,8 @@ executors = SeleniumHatch.get_remote_executors("192.168.1.1", 4444)
 chrome_capabilities = SeleniumHatch.get_remote_browser_capabilities(browser="chrome")
 driver = webuidriver.Remote(executors[0], desired_capabilities=chrome_capabilities)
 driver.get("http://www.baidu.com")
+driver.web_driver_wait(timeout=10).until(lambda dr: dr.title == "百度一下，你就知道")  # WebDriverWait.until
+
 driver.until_find.element_by_id("kw").send_keys("hello world.")
 driver.until_find.elements_by_css_selector("input.bg.s_btn").click()
 driver.close()
@@ -459,4 +462,3 @@ web ui控件元素的获取，遵循selenium的规则，可以通过下述方式
 
 
 
- 
