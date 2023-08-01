@@ -58,7 +58,7 @@ class UploadCommand(Command):
 
 
 install_requires = [
-    "selenium",
+    "selenium>=3.141.0",  # 建议版本 python 3.6 + selenium 3.141.0;  如果使用selenium 4，需要python>=3.7
     "requests",
     "rtsf",
 ]
@@ -69,7 +69,7 @@ install_requires = [
 
 setup(
         name=__about__.__title__,
-        version=__about__.__version__,        
+        version=__about__.__version__,
         description=__about__.__short_desc__,
         long_description=long_description,
         long_description_content_type='text/markdown',
@@ -78,7 +78,7 @@ setup(
         url=__about__.HOME_PAGE,
         license=__about__.__license__,
         python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4',
-        packages=find_packages(exclude=()),        
+        packages=find_packages(exclude=()),
         keywords='test web ui',
         install_requires=install_requires,
         # dependency_links=dependency_links,
