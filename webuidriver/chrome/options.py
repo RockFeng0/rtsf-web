@@ -15,6 +15,10 @@ class ChromeArguments(object):
     KIOSK = "--kiosk"  # 全屏启动，无地址栏
     WINDOW_SIZE = "--window-size=1024,650"  # 置窗口尺寸(宽高)
 
+    # 将给定的（不安全的）起源视为安全的起源。多个来源可以逗号分隔的列表形式提供
+    # 例如： --unsafely-treat-insecure-origin-as-secure=http://example1.com,http://example2.com
+    UNSAFE_AS_SECURE = "--unsafely-treat-insecure-origin-as-secure="
+
 
 class ChromeExperiments(object):
     EXCLUDE_SWITCHES = {
