@@ -105,7 +105,7 @@ class UntilFind(object):
         if by not in self.LOC:
             raise Exception("unknown location {0}, should be {1}".format(by, self.LOC))
 
-        def by_func(value, index=0, timeout=10):
+        def by_func(value, timeout=10):
             try:
                 elms = WebDriverWait(self._driver, timeout).until(
                     lambda dr: dr.find_elements(by, value)
@@ -117,7 +117,7 @@ class UntilFind(object):
                 print("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
                 raise err
 
-            return elms[index]
+            return elms
 
         return by_func
 
