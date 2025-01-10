@@ -94,8 +94,9 @@ class UntilFind(object):
                 print("Web driver is not define.")
                 raise err
             except Exception as err:
-                print("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
-                raise err
+                # print("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
+                # raise err
+                raise TimeoutError("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
 
             return elm
 
@@ -114,8 +115,9 @@ class UntilFind(object):
                 print("Web driver is not define.")
                 raise err
             except Exception as err:
-                print("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
-                raise err
+                # print("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
+                # raise err
+                raise TimeoutError("Warning: Not found element(timeout: {0}, by: {1}, value: {2})".format(timeout, by, value))
 
             return elms
 
