@@ -141,14 +141,15 @@ class UntilSwitch(object):
 
         def _target(index, timeout=10):
             if target == "window":
-                win_handle = WebDriverWait(self._driver, timeout, ignored_exceptions=IndexError).until(
+                win_handle = WebDriverWait(self._driver, timeout, ignored_exceptions=[IndexError]).until(
                     method=lambda dr: dr.window_handles[index] if dr.window_handles[index] else None,
                     message="Not found window(index: {0}, timeout: {1})".format(index, timeout)
                 )
                 self._driver.switch_to.window(win_handle)
             else:
-                WebDriverWait(self._driver, timeout, ignored_exceptions=IndexError).until(
-                    method=lambda dr: True if dr.find_elements_by_tag_name("iframe")[index] else None,
+                WebDriverWait(self._driver, timeout, ignored_exceptions=[IndexError]).until(
+                    # method=lambda dr: True if dr.find_elements_by_tag_name("iframe")[index] else None,   # selenium3 语法
+                    method=lambda dr: True if dr.find_elements(By.TAG_NAME, "iframe")[index] else None,  # selenium4 语法,向下兼容
                     message="Not found iframe(index: {0}, timeout: {1})".format(index, timeout)
                 )
                 self._driver.switch_to.frame(index)
