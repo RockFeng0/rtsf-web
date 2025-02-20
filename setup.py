@@ -58,9 +58,11 @@ class UploadCommand(Command):
 
 
 install_requires = [
-    # 如果使用selenium 4，需要python>=3.7，Selenium Manager 在selenium V4.6引入的，每次开启driver都会去请求国外网址
-    # 因为国内网络原因，selenium manager需要访问的站点，会报错error sending request for url。如果有vpn可以自行将selenium升级更高的版本
-    "selenium (>=3.141.0, <4.6.0)",  # 建议版本 python 3.6 + selenium 3.141.0;  ;
+    # 如果使用selenium 4，需要python>=3.7
+    # Selenium Manager 在selenium V4.6引入的，每次开启driver都会去请求国外网址
+    #   因为国内网络原因，selenium manager需要访问的站点，会报错error sending request for url
+    #   selenium > 4.6，建议配置环境变量 SE_CHROMEDRIVER,指定driver路径
+    "selenium (>=3.141.0, !=4.17)",  # 建议版本 python 3.6 + selenium 3.141.0;
     "requests",
     "rtsf",
 ]
