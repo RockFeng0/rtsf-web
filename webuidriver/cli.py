@@ -2,7 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import argparse
-from rtsf.p_applog import color_print, logger
+from rtsf.p_applog import color_print, AppLog
 from rtsf.p_executer import TestRunner
 from webuidriver.driver import LocalDriver, RemoteDriver
 from webuidriver.remote.SeleniumJar import SeleniumJar
@@ -105,7 +105,7 @@ def local_main_run():
     
     color_print("webuidriver {}".format(__version__), "GREEN")
     args = parser.parse_args()
-    logger.setup_logger(args.log_level, args.log_file)    
+    logger = AppLog(log_file=args.log_file, log_level=args.log_level).get_logger()
     
     LocalDriver._browser = args.browser
     LocalDriver._download_path = args.download_path
@@ -153,7 +153,8 @@ def remote_main_run():
     
     color_print("webuidriver {}".format(__version__), "GREEN")
     args = parser.parse_args()
-    logger.setup_logger(args.log_level, args.log_file)    
+    # logger.setup_logger(args.log_level, args.log_file)
+    logger = AppLog(log_file=args.log_file, log_level=args.log_level).get_logger()
     
     RemoteDriver._browser = args.browser
     RemoteDriver._download_path = args.download_path
