@@ -13,7 +13,9 @@
 
 Browser | Component
 --------|----------
-Chrome              |[chromedriver(.exe)](http://chromedriver.storage.googleapis.com/index.html)
+Chrome(version <= 114) |[chromedriver(.exe)](http://chromedriver.storage.googleapis.com/index.html)
+Chrome(version > 114 ) |[国内镜像chromedriver(.exe)](https://registry.npmmirror.com/binary.html?path=chrome-for-testing/)
+Chrome                 |[官网最新chromedriver(.exe)](https://googlechromelabs.github.io/chrome-for-testing/)
 Internet Explorer   |[IEDriverServer.exe](http://selenium-release.storage.googleapis.com/index.html)
 Edge                |[MicrosoftWebDriver.msi](http://go.microsoft.com/fwlink/?LinkId=619687)
 Firefox 47+         |[geckodriver(.exe)](https://github.com/mozilla/geckodriver/releases/)
