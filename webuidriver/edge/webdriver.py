@@ -1,7 +1,7 @@
 #! python3
 # -*- encoding: utf-8 -*-
 
-from webuidriver.remote.wait_until import WaitUntil
+from webuidriver.support.wait_until import WaitUntil
 from selenium.webdriver.edge.webdriver import WebDriver as EdgeWebDriver
 
 
